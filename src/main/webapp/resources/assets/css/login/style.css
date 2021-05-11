@@ -1,0 +1,52 @@
+body {
+    min-height: 100vh;
+    background: linear-gradient(to right, rgb(96, 202, 226), rgb(208, 142, 241), rgb(252, 135, 142));
+}
+
+.form-control:not(select) {
+    padding: 1.5rem 0.5rem;
+}
+
+select.form-control {
+    height: 52px;
+    padding-left: 0.5rem;
+}
+
+.form-control::placeholder {
+    color: #ccc;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.form-control:focus {
+    box-shadow: none;
+}
+
+.form-area {
+    background-color: rgb(255, 255, 255, 0.5);
+}
+
+.hide-class {
+  display: none;
+}
+
+.f-12 {
+    font-size: 12px;
+  }
+  .f-14 {
+    font-size: 14px;
+  }
+  .f-15 {
+    font-size: 15px;
+  }
+  .f-16 {
+    font-size: 16px;
+  }
+  .f-18 {
+    font-size: 18px;
+  }
+  .f-20 {
+    font-size: 20px;
+  }
+  .f-22 {
+    font-size: 22px;
+  }
