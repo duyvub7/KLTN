@@ -3573,7 +3573,7 @@ textarea:focus {
 test chat box
 */
 .container{max-width:1170px; margin:auto;}
-img{ max-width:100%;}
+img{ max-width:100%; max-height: 500px;}
 .inbox_people {
   background: #f8f8f8 none repeat scroll 0 0;
   float: left;
@@ -3734,5 +3734,15 @@ upload image
 .select-ssm {
   height: 30px;
   line-height: 1.8;
+}
+
+.sticky-left {
+	position: sticky !important;
+    top: -240px;
+}
+
+.sticky-right {
+	position: sticky !important;
+    top: 5px;
 }
 

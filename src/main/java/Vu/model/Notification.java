@@ -1,5 +1,7 @@
 package Vu.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "Notification")
@@ -20,6 +26,11 @@ public class Notification {
 	
 	@Column(name = "notification_content", columnDefinition = "nvarchar(200)")
 	private String notification_content;
+	
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "time", columnDefinition = "datetime")
+	private Date time;
 	
 	@Column(name = "account_id")
 	private int account_id;
@@ -53,6 +64,14 @@ public class Notification {
 
 	public void setNotification_content(String notification_content) {
 		this.notification_content = notification_content;
+	}
+
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
 	}
 
 	public int getAccount_id() {

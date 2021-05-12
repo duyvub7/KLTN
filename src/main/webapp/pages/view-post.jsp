@@ -21,8 +21,8 @@
                         <div class="header-top-navigation">
                             <nav>
                                 <ul>
-                                    <li class="mr-4 ml-2 active"><a href="index.html">Bài viết</a></li>
-                                    <li class="mr-4 "><a href="index2.html">Phòng trọ</a></li>
+                                    <li class="mr-4 ml-2 active"><a href="view-post">Bài viết</a></li>
+                                    <li class="mr-4 "><a href="view-emptyroom">Phòng trọ</a></li>
                                     <li class="mr-4 "><a href="index3.html">Ở ghép</a></li>
                                     <li class="mr-4 "><a href="index4.html">Đồ dùng</a></li>
                                     <li class="notification-trigger mr-4 float-right">
@@ -33,85 +33,52 @@
                                         </a>
                                         <div class="message-dropdown" id="b">
                                             <div class="dropdown-title">
-                                                <p class="recent-msg">Notification</p>
+                                                <p class="recent-msg">Thông báo</p>
                                                 <button>
                                                     <i class="flaticon-settings"></i>
                                                 </button>
                                             </div>
                                             <ul class="dropdown-msg-list">
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <!-- profile picture end -->
-                                                    <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/profile-small-3.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </div>
-                                                    <!-- profile picture end -->
-
-                                                    <!-- message content start -->
-                                                    <div class="msg-content notification-content">
-                                                        <a href="profile.html">Robert Faul</a>,
-                                                        <a href="profile.html">william jhon</a>
-                                                        <p>and 35 other people reacted to your photo</p>
-                                                    </div>
-                                                    <!-- message content end -->
-
-                                                    <!-- message time start -->
-                                                    <div class="msg-time">
-                                                        <p>25 Apr 2019</p>
-                                                    </div>
-                                                    <!-- message time end -->
-                                                </li>
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <!-- profile picture end -->
-                                                    <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/profile-small-4.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </div>
-                                                    <!-- profile picture end -->
-
-                                                    <!-- message content start -->
-                                                    <div class="msg-content notification-content">
-                                                        <a href="profile.html">Robert mushkil</a>,
-                                                        <a href="profile.html">Terry jhon</a>
-                                                        <p>and 20 other people reacted to your photo</p>
-                                                    </div>
-                                                    <!-- message content end -->
-
-                                                    <!-- message time start -->
-                                                    <div class="msg-time">
-                                                        <p>20 May 2019</p>
-                                                    </div>
-                                                    <!-- message time end -->
-                                                </li>
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <!-- profile picture end -->
-                                                    <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/profile-small-6.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </div>
-                                                    <!-- profile picture end -->
-
-                                                    <!-- message content start -->
-                                                    <div class="msg-content notification-content">
-                                                        <a href="profile.html">Horijon Mbala</a>,
-                                                        <a href="profile.html">Bashu jhon</a>
-                                                        <p>and 55 other people reacted to your post</p>
-                                                    </div>
-                                                    <!-- message content end -->
-
-                                                    <!-- message time start -->
-                                                    <div class="msg-time">
-                                                        <p>15 Jan 2019</p>
-                                                    </div>
-                                                    <!-- message time end -->
-                                                </li>
+                                            	<c:if test="${listNotification.size() < 5 }">
+                                            		<c:forEach var="notification" items="${listNotification }">
+	                                            		<li class="msg-list-item d-flex justify-content-between">
+		                                                    <div class="profile-thumb">
+		                                                        <figure class="profile-thumb-middle">
+		                                                            <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
+		                                                        </figure>
+		                                                    </div>
+		                                                    <div class="msg-content notification-content">
+		                                                        <a href="view-acc/${notification.getAccount().getAccount_id() }">${notification.getAccount().getName() }</a>
+		                                                        <p>${notification.notification_content }</p>
+		                                                    </div>
+		                                                    <div class="msg-time">
+		                                                        <p>${fn:substring(notification.time, 0, 16) }</p>
+		                                                    </div>
+		                                                </li>
+	                                            	</c:forEach>
+                                            	</c:if>
+                                            	<c:if test="${listNotification.size() >= 5 }">
+                                            		<c:forEach var="notification" items="${listNotification }" begin="0" end="4">
+	                                            		<li class="msg-list-item d-flex justify-content-between">
+		                                                    <div class="profile-thumb">
+		                                                        <figure class="profile-thumb-middle">
+		                                                            <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
+		                                                        </figure>
+		                                                    </div>
+		                                                    <div class="msg-content notification-content">
+		                                                        <a href="view-acc/${notification.getAccount().getAccount_id() }">${notification.getAccount().getName() }</a>
+		                                                        <p>${notification.notification_content }</p>
+		                                                    </div>
+		                                                    <div class="msg-time">
+		                                                        <p>${fn:substring(notification.time, 0, 16) }</p>
+		                                                    </div>
+		                                                </li>
+	                                            	</c:forEach>
+                                            	</c:if>
                                             </ul>
                                             <div class="msg-dropdown-footer">
-                                                <button>See all in messenger</button>
-                                                <button>Mark All as Read</button>
+                                                <button>Xem toàn bộ</button>
+                                                <button>Đánh dấu đã đọc</button>
                                             </div>
                                         </div>
                                     </li>
@@ -123,151 +90,133 @@
                                         </a>
                                         <div class="message-dropdown" id="a">
                                             <div class="dropdown-title">
-                                                <p class="recent-msg">recent message</p>
+                                                <p class="recent-msg">Tin nhắn hiện tại</p>
                                                 <div class="message-btn-group">
-                                                    <button>New group</button>
-                                                    <button>New Message</button>
+                                                    <button>Gửi tin nhắn mới</button>
                                                 </div>
                                             </div>
                                             <ul class="dropdown-msg-list">
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <!-- profile picture end -->
-                                                    <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/profile-small-3.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </div>
-                                                    <!-- profile picture end -->
-
-                                                    <!-- message content start -->
-                                                    <div class="msg-content">
-                                                        <h6 class="author"><a href="profile.html">Mili Raoulin</a></h6>
-                                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default</p>
-                                                    </div>
-                                                    <!-- message content end -->
-
-                                                    <!-- message time start -->
-                                                    <div class="msg-time">
-                                                        <p>25 Apr 2019</p>
-                                                    </div>
-                                                    <!-- message time end -->
-                                                </li>
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <!-- profile picture end -->
-                                                    <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/profile-small-4.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </div>
-                                                    <!-- profile picture end -->
-
-                                                    <!-- message content start -->
-                                                    <div class="msg-content">
-                                                        <h6 class="author"><a href="profile.html">Jhon Doe</a></h6>
-                                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default</p>
-                                                    </div>
-                                                    <!-- message content end -->
-
-                                                    <!-- message time start -->
-                                                    <div class="msg-time">
-                                                        <p>15 May 2019</p>
-                                                    </div>
-                                                    <!-- message time end -->
-                                                </li>
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <!-- profile picture end -->
-                                                    <div class="profile-thumb">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/profile-small-5.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </div>
-                                                    <!-- profile picture end -->
-
-                                                    <!-- message content start -->
-                                                    <div class="msg-content">
-                                                        <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                                        <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default</p>
-                                                    </div>
-                                                    <!-- message content end -->
-
-                                                    <!-- message time start -->
-                                                    <div class="msg-time">
-                                                        <p>20 Jun 2019</p>
-                                                    </div>
-                                                    <!-- message time end -->
-                                                </li>
+                                            	<c:if test="${listRequest.size() >= 5 }">
+                                            		<c:forEach var="request" items="${listRequest }" begin="0" end="4">
+	                                                	<li class="msg-list-item d-flex justify-content-between">
+		                                                    <div class="frnd-request-member">
+		                                                        <figure class="request-thumb">
+		                                                            <a href="profile.html">
+		                                                                <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
+		                                                            </a>
+		                                                        </figure>
+		                                                        <div class="frnd-content">
+		                                                            <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
+		                                                            <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
+		                                                            <div class="request-btn-inner">
+		                                                                <button class="frnd-btn">Chấp nhận</button>
+		                                                                <button class="frnd-btn delete">Xóa</button>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                </li>
+	                                                </c:forEach>
+                                            	</c:if>
+                                            	<c:if test="${listRequest.size() < 5 }">
+                                            		<c:forEach var="message" items="${listChat }">
+                                            			<c:if test="${message.getTo_account().getAccount_id() == recently_account.account_id}">
+                                            				<li class="msg-list-item d-flex justify-content-between">
+			                                                    <div class="profile-thumb">
+			                                                        <figure class="profile-thumb-middle">
+			                                                            <img src="${message.getFrom_account().getAvatar() }" alt="profile picture">
+			                                                        </figure>
+			                                                    </div>
+			                                                    <div class="msg-content">
+			                                                        <h6 class="author"><a href="profile.html">${message.getFrom_account().getName() }</a></h6>
+			                                                        <c:if test="${message.getImage().size() > 0 }"></c:if>
+			                                                        <p>${message.message_content }</p>
+			                                                    </div>
+			                                                    <div class="msg-time">
+			                                                        <p>${fn:substring(message.time, 0, 16) }</p>
+			                                                    </div>
+			                                                </li>
+                                            			</c:if>
+	                                                	<c:if test="${message.getTo_account().getAccount_id() != recently_account.account_id}">
+                                            				<li class="msg-list-item d-flex justify-content-between">
+			                                                    <div class="profile-thumb">
+			                                                        <figure class="profile-thumb-middle">
+			                                                            <img src="${message.getTo_account().getAvatar() }" alt="profile picture">
+			                                                        </figure>
+			                                                    </div>
+			                                                    <div class="msg-content">
+			                                                        <h6 class="author"><a href="profile.html">${message.getTo_account().getName() }</a></h6>
+			                                                        <p><strong>Bạn: </strong>${message.message_content }</p>
+			                                                    </div>
+			                                                    <div class="msg-time">
+			                                                        <p>${fn:substring(message.time, 0, 16) }</p>
+			                                                    </div>
+			                                                </li>
+                                            			</c:if>
+	                                                </c:forEach>
+                                            	</c:if>
                                             </ul>
                                             <div class="msg-dropdown-footer">
-                                                <a href="Message.html"><button>See all in messenger</button></a>
-                                                <button>Mark All as Read</button>
+                                                <a href="message" class="py-2"><button>Xem toàn bộ</button></a>
+                                                <button>Đánh dấu đã đọc tất cả</button>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="notification-trigger mr-5 float-right">
                                         <a class="msg-trigger-btn" href="#d">
                                             <button class="notification"><i class="flaticon-users f-22"></i>
-                                                <span>03</span>
+                                                <span>${listRequest.size() }</span>
                                             </button>
                                         </a>
                                         <div class="message-dropdown" id="d">
                                             <div class="dropdown-title">
-                                                <p class="recent-msg">Notification</p>
+                                                <p class="recent-msg">Yêu cầu kết bạn</p>
                                                 <button>
                                                     <i class="flaticon-settings"></i>
                                                 </button>
                                             </div>
                                             <ul class="dropdown-msg-list">
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <div class="frnd-request-member">
-                                                        <figure class="request-thumb">
-                                                            <a href="profile.html">
-                                                                <img src="assets/images/profile/avatar-1.jpg" alt="proflie author">
-                                                            </a>
-                                                        </figure>
-                                                        <div class="frnd-content">
-                                                            <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                                            <p class="author-subtitle">Works at HasTech</p>
-                                                            <div class="request-btn-inner">
-                                                                <button class="frnd-btn">confirm</button>
-                                                                <button class="frnd-btn delete">delete</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <div class="frnd-request-member">
-                                                        <figure class="request-thumb">
-                                                            <a href="profile.html">
-                                                                <img src="assets/images/profile/avatar-6.jpg" alt="proflie author">
-                                                            </a>
-                                                        </figure>
-                                                        <div class="frnd-content">
-                                                            <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                                            <p class="author-subtitle">Works at HasTech</p>
-                                                            <div class="request-btn-inner">
-                                                                <button class="frnd-btn">confirm</button>
-                                                                <button class="frnd-btn delete">delete</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="msg-list-item d-flex justify-content-between">
-                                                    <div class="frnd-request-member">
-                                                        <figure class="request-thumb">
-                                                            <a href="profile.html">
-                                                                <img src="assets/images/profile/avatar-3.jpg" alt="proflie author">
-                                                            </a>
-                                                        </figure>
-                                                        <div class="frnd-content">
-                                                            <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                                            <p class="author-subtitle">Works at HasTech</p>
-                                                            <div class="request-btn-inner">
-                                                                <button class="frnd-btn">confirm</button>
-                                                                <button class="frnd-btn delete">delete</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                            	<c:if test="${listRequest.size() >= 5 }">
+                                            		<c:forEach var="request" items="${listRequest }" begin="0" end="4">
+	                                                	<li class="msg-list-item d-flex justify-content-between">
+		                                                    <div class="frnd-request-member">
+		                                                        <figure class="request-thumb">
+		                                                            <a href="profile.html">
+		                                                                <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
+		                                                            </a>
+		                                                        </figure>
+		                                                        <div class="frnd-content">
+		                                                            <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
+		                                                            <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
+		                                                            <div class="request-btn-inner">
+		                                                                <button class="frnd-btn">Chấp nhận</button>
+		                                                                <button class="frnd-btn delete">Xóa</button>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                </li>
+	                                                </c:forEach>
+                                            	</c:if>
+                                            	<c:if test="${listRequest.size() < 5 }">
+                                            		<c:forEach var="request" items="${listRequest }">
+	                                                	<li class="msg-list-item d-flex justify-content-between">
+		                                                    <div class="frnd-request-member">
+		                                                        <figure class="request-thumb">
+		                                                            <a href="profile.html">
+		                                                                <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
+		                                                            </a>
+		                                                        </figure>
+		                                                        <div class="frnd-content">
+		                                                            <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
+		                                                            <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
+		                                                            <div class="request-btn-inner">
+		                                                                <button class="frnd-btn">Chấp nhận</button>
+		                                                                <button class="frnd-btn delete">Xóa</button>
+		                                                            </div>
+		                                                        </div>
+		                                                    </div>
+		                                                </li>
+	                                                </c:forEach>
+                                            	</c:if>
                                             </ul>
                                             <div class="msg-dropdown-footer">
                                                 <button>Xem toàn bộ</button>
@@ -490,18 +439,13 @@
                         </a>
                         <div class="profile-dropdown text-left">
                             <div class="profile-head">
-                                <h5 class="name"><a href="#">Madison Howard</a></h5>
-                                <a class="mail" href="#">mailnam@mail.com</a>
+                                <h5 class="name"><a href="#">${recently_account.name }</a></h5>
+                                <a class="mail" href="#">${recently_account.email }</a>
                             </div>
                             <div class="profile-body">
                                 <ul>
-                                    <li><a href="profile.html"><i class="flaticon-user"></i>Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-message"></i>Inbox</a></li>
-                                    <li><a href="#"><i class="flaticon-document"></i>Activity</a></li>
-                                </ul>
-                                <ul>
-                                    <li><a href="#"><i class="flaticon-settings"></i>Setting</a></li>
-                                    <li><a href="signup.html"><i class="flaticon-unlock"></i>Sing out</a></li>
+                                    <li><a href="profile.html"><i class="flaticon-user"></i>Hồ sơ</a></li>
+                                    <li><a href="logout"><i class="flaticon-unlock"></i>Đăng xuất</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -519,7 +463,7 @@
             <div class="container mt-4">
                 <div class="row">
                     <div class="col-lg-3 order-2 order-lg-1">
-                        <aside class="widget-area">
+                        <aside class="widget-area  sticky-left">
                             <!-- widget single item start -->
                             <div class="card card-profile widget-item p-0">
                                 <div class="profile-banner">
@@ -538,15 +482,14 @@
                                 </div>
                             </div>
                             <!-- widget single item start -->
-
-                        
+                            
                             <!-- widget single item start -->
                             <div class="card widget-item">
-                                <h4 class="widget-title">Lời mời kết bạn</h4>
+                                <h4 class="widget-title mb-4">Lời mời kết bạn</h4>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
                                     	<c:forEach var="request" items="${listRequest }">
-                                    		<li class="unorder-list">
+                                    		<li class="unorder-list mb-3">
 	                                            <div class="profile-thumb">
 	                                                <a href="#">
 	                                                    <figure class="profile-thumb-small">
@@ -570,7 +513,7 @@
 	                                        </li>
                                     	</c:forEach>
                                     </ul>
-                                    <a href="#" class="f-16 text-primary float-right">>>>Xem tất cả</a>
+                                    <a href="#" class="f-16 text-primary float-right mt-1">>>>Xem tất cả</a>
                                 </div>
                             </div>
                             <!-- widget single item end -->
@@ -1482,18 +1425,18 @@
                     </div>
 
                     <div class="col-lg-3 order-3">
-                        <aside class="widget-area">
+                        <aside class="widget-area sticky-right">
                             <!-- widget single item start -->
-                            <div class="card widget-item">
-                                <h4 class="widget-title">Bài nổi bật</h4>
+                            <div class="card widget-item pb-2">
+                                <h4 class="widget-title mb-4">Bài nổi bật</h4>
                                 <div class="widget-body">
                                     <ul class="like-page-list-wrapper">
-                                        <li class="unorder-list">
+                                        <li class="unorder-list mb-3">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/avatar-2.jpg" alt="profile picture">
+                                                        <img src="resources/contents/images/avatar/a2.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -1505,12 +1448,12 @@
                                                 <a href="photos.html" class="text-dark">Mình xin chia sẻ một số kinh nghiệm khi ở trọ...</a>
                                             </div>
                                         </li>
-                                        <li class="unorder-list">
+                                        <li class="unorder-list mb-3">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/avatar-3.jpg" alt="profile picture">
+                                                        <img src="resources/contents/images/avatar/a3.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -1522,12 +1465,12 @@
                                                 <a href="photos.html" class="text-dark">Những địa điểm cho sinh viên giải trí ở Huế...</a>
                                             </div>
                                         </li>
-                                        <li class="unorder-list">
+                                        <li class="unorder-list mb-3">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/avatar-2.jpg" alt="profile picture">
+                                                        <img src="resources/contents/images/avatar/a4.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -1539,12 +1482,12 @@
                                                 <a href="photos.html" class="text-dark">Mình xin chia sẻ một số kinh nghiệm khi ở trọ...</a>
                                             </div>
                                         </li>
-                                        <li class="unorder-list">
+                                        <li class="unorder-list mb-3">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/avatar-3.jpg" alt="profile picture">
+                                                        <img src="resources/contents/images/avatar/a5.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>
@@ -1556,12 +1499,12 @@
                                                 <a href="photos.html" class="text-dark">Những địa điểm cho sinh viên giải trí ở Huế...</a>
                                             </div>
                                         </li>
-                                        <li class="unorder-list">
+                                        <li class="unorder-list mb-3">
                                             <!-- profile picture end -->
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-small">
-                                                        <img src="assets/images/profile/avatar-2.jpg" alt="profile picture">
+                                                        <img src="resources/contents/images/avatar/a7.jpg" alt="profile picture">
                                                     </figure>
                                                 </a>
                                             </div>

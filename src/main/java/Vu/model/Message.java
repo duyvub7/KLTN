@@ -36,6 +36,9 @@ public class Message {
 	@Column(name = "message_content", columnDefinition = "nvarchar(2000)")
 	private String message_content;
 	
+	@Column(name = "seen", columnDefinition = "bit")
+	private boolean seen;
+	
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "time", columnDefinition = "datetime")
@@ -87,6 +90,14 @@ public class Message {
 
 	public void setMessage_content(String message_content) {
 		this.message_content = message_content;
+	}
+
+	public boolean isSeen() {
+		return seen;
+	}
+
+	public void setSeen(boolean seen) {
+		this.seen = seen;
 	}
 
 	public Date getTime() {
