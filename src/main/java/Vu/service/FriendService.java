@@ -18,8 +18,23 @@ public class FriendService {
 		return friendRepository.findAll();
 	}
 	
-	public List<Friend> findAllByReceiveId(int id) {
-		return friendRepository.findAllByReceiveId(id);
+	public List<Friend> findAllFriend ( int id ) {
+		return friendRepository.findAllFriend(id);
 	}
 	
+	public List<Friend> findAllReceive(int id) {
+		return friendRepository.findAllReceive(id);
+	}
+	
+	public List<Friend> findAllSend(int id) {
+		return friendRepository.findAllSend(id);
+	}
+	
+	public void save ( Friend friend ) {
+		friendRepository.save(friend);
+	}
+	
+	public void delete ( int id ) {
+		friendRepository.delete(id);
+	}
 }

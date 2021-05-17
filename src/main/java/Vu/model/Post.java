@@ -38,7 +38,7 @@ public class Post {
 	@Column(name = "post_date", columnDefinition = "datetime")
 	private Date post_date;
 	
-	@Column(name = "post_content", columnDefinition = "nvarchar(2000)")
+	@Column(name = "post_content", columnDefinition = "nvarchar(4000)")
 	private String post_content;
 	
 	@Column(name = "price")

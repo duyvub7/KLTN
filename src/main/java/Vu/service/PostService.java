@@ -14,20 +14,28 @@ public class PostService {
 	@Autowired
 	private PostRepository postRepository;
 	
-	public List<Post> findAllReviewPost() {
-		return postRepository.findAllReviewPost();
+	public List<Post> findAll( int type) {
+		return postRepository.findAll(type);
 	}
 	
-	public List<Post> findAllEmptyRoom() {
-		return postRepository.findAllEmptyRoom();
+	public List<Post> findTopPost( int type) {
+		return postRepository.findAll(type);
 	}
 	
-	public List<Post> findAllShareRoom() {
-		return postRepository.findAllShareRoom();
+	public List<Post> findByAccountId( int id ) {
+		return postRepository.findByAccountId(id);
+	}
+
+	public List<Post> findByAccountId( int id, int type) {
+		return postRepository.findByAccountId(id, type);
 	}
 	
-	public List<Post> findAllUtensilPost() {
-		return postRepository.findAllUtensilPost();
+	public List<Post> findAllSavePost ( int id ) {
+		return postRepository.findAllSavePost(id);
+	}
+	
+	public List<Post> findAllSavePost ( int id, int type ) {
+		return postRepository.findAllSavePost(id, type);
 	}
 	
 	public int getLastPostId() {

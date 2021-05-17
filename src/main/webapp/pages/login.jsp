@@ -4,20 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <!-- Meta, title, CSS, favicons, etc. -->
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Đăng nhập - Đăng ký</title>
-  <link rel="shortcut icon" type="image/x-icon" href="resources/contents/images/icon-home.ico">
-  <link rel="stylesheet" href="resources/assets/css/vendor/bootstrap.min.css">
-  <script type="text/javascript" src="resources/assets/js/vendor/jquery.min.js"></script>
-  <script type="text/javascript" src="resources/assets/js/vendor/popper.min.js"></script>
-  <script type="text/javascript" src="resources/assets/js/vendor/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="resources/assets/icon/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" href="resources/assets/css/login/style.css">
-  
+	<title>Đăng nhập - Đăng ký</title>
+ 	<jsp:include page="/pages/layout/header_login.jsp" />
 </head>
 <body>
 	<div class="container">
@@ -56,7 +44,7 @@
                             
                             <div class="input-group col-lg-12 row pr-0">
                                 <div class="col-6">
-                                    <a href="#">Quên mật khẩu</a>
+                                    <a href="forget-pass">Quên mật khẩu</a>
                                 </div>
                                 <div class="col-6 pr-0">
                                     <div class="form-group mb-0">

@@ -211,7 +211,7 @@ $(document).ready(function () {
 	btnUpload.on("change", function(e){
 		var ext = btnUpload.val().split('.').pop().toLowerCase();
 		if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
-			$(".error_msg").text("Not an Image...");
+			$(".error_msg").text("Chưa chọn ảnh nào");
 		} else {
 			$(".error_msg").text("");
 			btnOuter.addClass("file_uploading");

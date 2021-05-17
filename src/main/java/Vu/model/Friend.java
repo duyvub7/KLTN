@@ -21,8 +21,8 @@ public class Friend {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "frend_id")
-	private int frend_id;
+	@Column(name = "friend_id")
+	private int friend_id;
 	
 	@Column(name = "friend_status", columnDefinition = "bit not null")
 	private boolean friend_status;
@@ -50,12 +50,12 @@ public class Friend {
 		super();
 	}
 
-	public int getFrend_id() {
-		return frend_id;
+	public int getFriend_id() {
+		return friend_id;
 	}
 
-	public void setFrend_id(int frend_id) {
-		this.frend_id = frend_id;
+	public void setFrend_id(int friend_id) {
+		this.friend_id = friend_id;
 	}
 
 	public boolean isFriend_status() {

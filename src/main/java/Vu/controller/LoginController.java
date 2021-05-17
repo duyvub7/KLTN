@@ -54,15 +54,15 @@ public class LoginController {
 		String password = request.getParameter("password-log");
 		Account acc = accountService.findOneByPhoneAndPassword(phone, password);
 		if(acc!=null) {
-			if(session.getAttribute("recently_account")==null) {
-				session.setAttribute("recently_account", acc);
+			if(session.getAttribute("current_account")==null) {
+				session.setAttribute("current_account", acc);
 			}
 			if (acc.getRole() == 1) {
 				return "redirect:admin/manager-account";
 			}
 		}
-		session.setAttribute("recently_account", acc);
-		return "redirect:view-post";
+		session.setAttribute("current_account", acc);
+		return "redirect:post";
 	}
 	
 	@PostMapping(value = "/checkregister")
@@ -119,6 +119,21 @@ public class LoginController {
 			e.printStackTrace();
 		}
 		return "login";
+	}
+	
+	@GetMapping("/forget-pass")
+	public String forgetpass_phone(HttpSession session) {
+		return "forgetpass-phone";
+	}
+	
+	@GetMapping("/getpass-otp")
+	public String forgetpass_otp(HttpSession session) {
+		return "forgetpass-otp";
+	}
+	
+	@GetMapping("/getpass-newpass")
+	public String forgetpass_newpass(HttpSession session) {
+		return "forgetpass-newpass";
 	}
 	
 	@GetMapping("/logout")
