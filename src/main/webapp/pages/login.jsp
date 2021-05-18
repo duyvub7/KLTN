@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Đăng nhập - Đăng ký</title>
  	<jsp:include page="/pages/layout/header_login.jsp" />
+ 	<style>  
+        .error {color:red}  
+    </style> 
 </head>
 <body>
 	<div class="container">
@@ -18,7 +22,7 @@
             <div class="col-md-7 col-lg-6 ml-auto">
                 <!-- Login Form -->
                 <div class="form-area p-3 mb-5">
-                    <form action="login" method="post" id="login">
+                    <form:form action="login" method="post" modelAttribute="account" commandName="account" id="login">
                         <div class="row mb-3">
                             <div class="input-group col-6 mb-3">
                                 <div class="input-group-prepend">
@@ -26,8 +30,9 @@
                                         <i class="fa fa-phone-square text-muted"></i>
                                     </span>
                                 </div>
-                                <input type="tel" id="phone-log" name="phone-log" placeholder="Số điện thoại"
-                                    class="form-control bg-white border-md border-left-0 pl-3" required/>
+                                <form:input type="tel" path="phone" id="phone-log" name="phone-log" placeholder="Số điện thoại"
+                                    class="form-control bg-white border-md border-left-0 pl-3" />
+                                <form:errors path="phone" cssClass="error"/>
                             </div>
                             
                             <div class="input-group col-6 mb-3">
@@ -36,12 +41,21 @@
                                         <i class="fa fa-lock text-muted"></i>
                                     </span>
                                 </div>
-                                <input type="password" id="password-log" name="password-log" placeholder="Mật khẩu"
-                                    class="form-control bg-white border-left-0 border-md" autocomplete="off" required/>
+                                <form:input type="password" path="password" id="password-log" name="password-log" placeholder="Mật khẩu"
+                                    class="form-control bg-white border-left-0 border-md" autocomplete="off" />
+                                <form:errors path="password" cssClass="error"/>
                             </div>
-							
-							<div id="messageError" class="ml-3 mb-2" style="visibility: hidden; color: red">error</div>
-                            
+							<!-- 
+							<c:choose>
+								<c:when test="${error != null && error.equals('404') }">
+									<div id="messageError" class="ml-3 mb-2" style=" color: red">Thong tin khong dung</div>
+								</c:when>
+								<c:otherwise>
+									<div id="messageError" class="ml-3 mb-2" style="visibility: hidden; color: red">error</div>
+								</c:otherwise>
+							</c:choose>
+							-->
+                            <div id="messageError" class="ml-3 mb-2" style="visibility: hidden; color: red">error</div>
                             <div class="input-group col-lg-12 row pr-0">
                                 <div class="col-6">
                                     <a href="forget-pass">Quên mật khẩu</a>
@@ -53,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
                 
                 <!-- Register Form -->

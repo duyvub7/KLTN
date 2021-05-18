@@ -3592,10 +3592,6 @@ textarea:focus {
   font-size: 22px;
 }
 
-.hide-class {
-  display: none;
-}
-
 .border-bot-light {
   border-bottom: 1px solid rgb(235, 232, 232);
 }
@@ -3854,4 +3850,34 @@ upload image
   overflow: hidden;
 }
 
+.border-opacity {
+	border-bottom: 1px solid #d3d3d338;
+}
 
+.display-0 {
+	display: none;
+}
+
+.text-blue {
+	color: blue;
+	cursor: pointer;
+}
+
+.lh-3 {
+	line-height: 3px;
+}
+.lh-5 {
+	line-height: 5px;
+}
+.lh-10 {
+	line-height: 10px;
+}
+.lh-12 {
+	line-height: 12px;
+}
+.lh-16 {
+	line-height: 16px;
+}
+.lh-20 {
+	line-height: 20px;
+}

@@ -69,42 +69,44 @@
                                            </button>
                                        </div>
                                        <ul class="dropdown-msg-list">
-                                       	<c:if test="${listNotification.size() < 5 }">
-                                       		<c:forEach var="notification" items="${listNotification }">
-                                        		<li class="msg-list-item d-flex justify-content-between">
-                                                 <div class="profile-thumb">
-                                                     <figure class="profile-thumb-middle">
-                                                         <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
-                                                     </figure>
-                                                 </div>
-                                                 <div class="msg-content notification-content">
-                                                     <a href="view-acc/${notification.getAccount().getAccount_id() }">${notification.getAccount().getName() }</a>
-                                                     <p>${notification.notification_content }</p>
-                                                 </div>
-                                                 <div class="msg-time">
-                                                     <p>${fn:substring(notification.time, 0, 16) }</p>
-                                                 </div>
-                                             </li>
-                                        	</c:forEach>
-                                       	</c:if>
-                                       	<c:if test="${listNotification.size() >= 5 }">
-                                       		<c:forEach var="notification" items="${listNotification }" begin="0" end="4">
-                                        		<li class="msg-list-item d-flex justify-content-between">
-                                                 <div class="profile-thumb">
-                                                     <figure class="profile-thumb-middle">
-                                                         <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
-                                                     </figure>
-                                                 </div>
-                                                 <div class="msg-content notification-content">
-                                                     <a href="view-acc/${notification.getAccount().getAccount_id() }">${notification.getAccount().getName() }</a>
-                                                     <p>${notification.notification_content }</p>
-                                                 </div>
-                                                 <div class="msg-time">
-                                                     <p>${fn:substring(notification.time, 0, 16) }</p>
-                                                 </div>
-                                             </li>
-                                        	</c:forEach>
-                                       	</c:if>
+                                       		<c:choose>
+                                       			<c:when test="${listNotification.size() < 3 }">
+                                       				<c:forEach var="notification" items="${listNotification }" begin="0" end="2">
+		                                        		<li class="msg-list-item d-flex justify-content-between">
+			                                                 <div class="profile-thumb">
+			                                                     <figure class="profile-thumb-middle">
+			                                                         <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
+			                                                     </figure>
+			                                                 </div>
+			                                                 <div class="msg-content notification-content">
+			                                                     <a href="view-acc/${notification.getAccount().getAccount_id() }">${notification.getAccount().getName() }</a>
+			                                                     <p>${notification.notification_content }</p>
+			                                                 </div>
+			                                                 <div class="msg-time">
+			                                                     <p>${fn:substring(notification.time, 0, 16) }</p>
+			                                                 </div>
+			                                             </li>
+                                        			</c:forEach>
+                                       			</c:when>
+                                       			<c:otherwise>
+                                       				<c:forEach var="notification" items="${listNotification }">
+		                                        		<li class="msg-list-item d-flex justify-content-between">
+			                                                 <div class="profile-thumb">
+			                                                     <figure class="profile-thumb-middle">
+			                                                         <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
+			                                                     </figure>
+			                                                 </div>
+			                                                 <div class="msg-content notification-content">
+			                                                     <a href="view-acc/${notification.getAccount().getAccount_id() }">${notification.getAccount().getName() }</a>
+			                                                     <p>${notification.notification_content }</p>
+			                                                 </div>
+			                                                 <div class="msg-time">
+			                                                     <p>${fn:substring(notification.time, 0, 16) }</p>
+			                                                 </div>
+			                                             </li>
+                                        			</c:forEach>
+                                       			</c:otherwise>
+                                       		</c:choose>
                                        </ul>
                                        <div class="msg-dropdown-footer">
                                            <button>Xem toàn bộ</button>
@@ -126,64 +128,82 @@
                                            </div>
                                        </div>
                                        <ul class="dropdown-msg-list">
-                                       	<c:if test="${listRequest.size() >= 5 }">
-                                       		<c:forEach var="request" items="${listRequest }" begin="0" end="4">
-                                            	<li class="msg-list-item d-flex justify-content-between">
-                                                 <div class="frnd-request-member">
-                                                     <figure class="request-thumb">
-                                                         <a href="profile.html">
-                                                             <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
-                                                         </a>
-                                                     </figure>
-                                                     <div class="frnd-content">
-                                                         <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
-                                                         <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
-                                                         <div class="request-btn-inner">
-                                                             <button class="frnd-btn">Chấp nhận</button>
-                                                             <button class="frnd-btn delete">Xóa</button>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-                                             </li>
-                                            </c:forEach>
-                                       	</c:if>
-                                       	<c:if test="${listRequest.size() < 5 }">
-                                       		<c:forEach var="message" items="${listChat }">
-                                       			<c:if test="${message.getTo_account().getAccount_id() == current_account.account_id}">
-                                       				<li class="msg-list-item d-flex justify-content-between">
-                                                  <div class="profile-thumb">
-                                                      <figure class="profile-thumb-middle">
-                                                          <img src="${message.getFrom_account().getAvatar() }" alt="profile picture">
-                                                      </figure>
-                                                  </div>
-                                                  <div class="msg-content">
-                                                      <h6 class="author"><a href="profile.html">${message.getFrom_account().getName() }</a></h6>
-                                                      <c:if test="${message.getImage().size() > 0 }"></c:if>
-                                                      <p>${message.message_content }</p>
-                                                  </div>
-                                                  <div class="msg-time">
-                                                      <p>${fn:substring(message.time, 0, 16) }</p>
-                                                  </div>
-                                              </li>
-                                       			</c:if>
-                                            	<c:if test="${message.getTo_account().getAccount_id() != current_account.account_id}">
-                                       				<li class="msg-list-item d-flex justify-content-between">
-                                                  <div class="profile-thumb">
-                                                      <figure class="profile-thumb-middle">
-                                                          <img src="${message.getTo_account().getAvatar() }" alt="profile picture">
-                                                      </figure>
-                                                  </div>
-                                                  <div class="msg-content">
-                                                      <h6 class="author"><a href="profile.html">${message.getTo_account().getName() }</a></h6>
-                                                      <p><strong>Bạn: </strong>${message.message_content }</p>
-                                                  </div>
-                                                  <div class="msg-time">
-                                                      <p>${fn:substring(message.time, 0, 16) }</p>
-                                                  </div>
-                                              </li>
-                                       			</c:if>
-                                            </c:forEach>
-                                       	</c:if>
+                                       		<c:choose>
+                                       			<c:when test="${listChat.size() >= 4 }">
+                                       				<c:forEach var="message" items="${listChat }" begin="0" end="3">
+                                       					<c:if test="${message.getTo_account().getAccount_id() == current_account.account_id}">
+		                                       				<li class="msg-list-item d-flex justify-content-between">
+			                                                  <div class="profile-thumb">
+			                                                      <figure class="profile-thumb-middle">
+			                                                          <img src="${message.getFrom_account().getAvatar() }" alt="profile picture">
+			                                                      </figure>
+			                                                  </div>
+			                                                  <div class="msg-content">
+			                                                      <h6 class="author"><a href="profile.html">${message.getFrom_account().getName() }</a></h6>
+			                                                      <c:if test="${message.getImage().size() > 0 }"></c:if>
+			                                                      <p>${message.message_content }</p>
+			                                                  </div>
+			                                                  <div class="msg-time">
+			                                                      <p>${fn:substring(message.time, 0, 16) }</p>
+			                                                  </div>
+		                                             	 	</li>
+		                                       			</c:if>
+		                                            	<c:if test="${message.getTo_account().getAccount_id() != current_account.account_id}">
+		                                       				<li class="msg-list-item d-flex justify-content-between">
+			                                                  <div class="profile-thumb">
+			                                                      <figure class="profile-thumb-middle">
+			                                                          <img src="${message.getTo_account().getAvatar() }" alt="profile picture">
+			                                                      </figure>
+			                                                  </div>
+			                                                  <div class="msg-content">
+			                                                      <h6 class="author"><a href="profile.html">${message.getTo_account().getName() }</a></h6>
+			                                                      <p><strong>Bạn: </strong>${message.message_content }</p>
+			                                                  </div>
+			                                                  <div class="msg-time">
+			                                                      <p>${fn:substring(message.time, 0, 16) }</p>
+			                                                  </div>
+			                                              	</li>
+		                                       			</c:if>
+		                                            </c:forEach>
+                                       			</c:when>
+                                       			<c:otherwise>
+                                       				<c:forEach var="message" items="${listChat }">
+		                                       			<c:if test="${message.getTo_account().getAccount_id() == current_account.account_id}">
+		                                       				<li class="msg-list-item d-flex justify-content-between">
+			                                                  <div class="profile-thumb">
+			                                                      <figure class="profile-thumb-middle">
+			                                                          <img src="${message.getFrom_account().getAvatar() }" alt="profile picture">
+			                                                      </figure>
+			                                                  </div>
+			                                                  <div class="msg-content">
+			                                                      <h6 class="author"><a href="profile.html">${message.getFrom_account().getName() }</a></h6>
+			                                                      <c:if test="${message.getImage().size() > 0 }"></c:if>
+			                                                      <p>${message.message_content }</p>
+			                                                  </div>
+			                                                  <div class="msg-time">
+			                                                      <p>${fn:substring(message.time, 0, 16) }</p>
+			                                                  </div>
+		                                             	 	</li>
+		                                       			</c:if>
+		                                            	<c:if test="${message.getTo_account().getAccount_id() != current_account.account_id}">
+		                                       				<li class="msg-list-item d-flex justify-content-between">
+			                                                  <div class="profile-thumb">
+			                                                      <figure class="profile-thumb-middle">
+			                                                          <img src="${message.getTo_account().getAvatar() }" alt="profile picture">
+			                                                      </figure>
+			                                                  </div>
+			                                                  <div class="msg-content">
+			                                                      <h6 class="author"><a href="profile.html">${message.getTo_account().getName() }</a></h6>
+			                                                      <p><strong>Bạn: </strong>${message.message_content }</p>
+			                                                  </div>
+			                                                  <div class="msg-time">
+			                                                      <p>${fn:substring(message.time, 0, 16) }</p>
+			                                                  </div>
+			                                              	</li>
+		                                       			</c:if>
+		                                            </c:forEach>
+                                       			</c:otherwise>
+                                       		</c:choose>
                                        </ul>
                                        <div class="msg-dropdown-footer">
                                            <a href="message" class="py-2"><button>Xem toàn bộ</button></a>
@@ -205,48 +225,50 @@
                                            </button>
                                        </div>
                                        <ul class="dropdown-msg-list">
-                                       	<c:if test="${listRequest.size() >= 5 }">
-                                       		<c:forEach var="request" items="${listRequest }" begin="0" end="4">
-                                            	<li class="msg-list-item d-flex justify-content-between">
-                                                 <div class="frnd-request-member">
-                                                     <figure class="request-thumb">
-                                                         <a href="profile.html">
-                                                             <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
-                                                         </a>
-                                                     </figure>
-                                                     <div class="frnd-content">
-                                                         <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
-                                                         <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
-                                                         <div class="request-btn-inner">
-                                                             <button class="frnd-btn">Chấp nhận</button>
-                                                             <button class="frnd-btn delete">Xóa</button>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-                                             </li>
-                                            </c:forEach>
-                                       	</c:if>
-                                       	<c:if test="${listRequest.size() < 5 }">
-                                       		<c:forEach var="request" items="${listRequest }">
-                                            	<li class="msg-list-item d-flex justify-content-between">
-                                                 <div class="frnd-request-member">
-                                                     <figure class="request-thumb">
-                                                         <a href="profile.html">
-                                                             <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
-                                                         </a>
-                                                     </figure>
-                                                     <div class="frnd-content">
-                                                         <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
-                                                         <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
-                                                         <div class="request-btn-inner">
-                                                             <button class="frnd-btn">Chấp nhận</button>
-                                                             <button class="frnd-btn delete">Xóa</button>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-                                             </li>
-                                            </c:forEach>
-                                       	</c:if>
+                                       		<c:choose>
+                                       			<c:when test="${listRequest.size() >= 3 }">
+                                       				<c:forEach var="request" items="${listRequest }" begin="0" end="2">
+		                                            	<li class="msg-list-item d-flex justify-content-between">
+			                                                 <div class="frnd-request-member">
+			                                                     <figure class="request-thumb">
+			                                                         <a href="profile.html">
+			                                                             <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
+			                                                         </a>
+			                                                     </figure>
+			                                                     <div class="frnd-content">
+			                                                         <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
+			                                                         <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
+			                                                         <div class="request-btn-inner">
+			                                                             <button class="frnd-btn">Chấp nhận</button>
+			                                                             <button class="frnd-btn delete">Xóa</button>
+			                                                         </div>
+			                                                     </div>
+			                                                 </div>
+			                                             </li>
+		                                            </c:forEach>
+                                       			</c:when>
+                                       			<c:otherwise>
+                                       				<c:forEach var="request" items="${listRequest }">
+		                                            	<li class="msg-list-item d-flex justify-content-between">
+			                                                 <div class="frnd-request-member">
+			                                                     <figure class="request-thumb">
+			                                                         <a href="profile.html">
+			                                                             <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
+			                                                         </a>
+			                                                     </figure>
+			                                                     <div class="frnd-content">
+			                                                         <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
+			                                                         <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
+			                                                         <div class="request-btn-inner">
+			                                                             <button class="frnd-btn">Chấp nhận</button>
+			                                                             <button class="frnd-btn delete">Xóa</button>
+			                                                         </div>
+			                                                     </div>
+			                                                 </div>
+			                                             </li>
+		                                            </c:forEach>
+                                       			</c:otherwise>
+                                       		</c:choose>
                                        </ul>
                                        <div class="msg-dropdown-footer">
                                            <button>Xem toàn bộ</button>

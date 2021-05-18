@@ -2,6 +2,8 @@ package Vu.controller;
 
 import java.time.LocalDate;
 
+import javax.validation.Valid; 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -24,10 +28,31 @@ public class LoginController {
 	private AccountService accountService;
 	
 	@GetMapping(value = {"/", "/login"})
-	public String getLogin() {
+	public String getLogin(Model model) {
+		model.addAttribute("account", new Account());
 		return "login";
 	}
-
+	
+	@PostMapping(value = "/login")
+	public String login(Model model, HttpServletRequest request, HttpSession session,
+			@Valid @ModelAttribute("account") Account account, BindingResult br ) {
+		if(br.hasErrors()) {
+			return "login";
+		}
+		Account acc = accountService.findOneByPhoneAndPassword(account.getPhone(), account.getPassword());
+		if(acc!=null) {
+			session.setAttribute("current_account", acc);
+			if (acc.getRole() == 1) {
+				return "redirect:/admin/manager-account";
+			}
+			else {
+				return "redirect:/post";
+			}
+		}
+		//model.addAttribute("error", "404");
+		return "login";
+	}
+	
 	@PostMapping(value= "/checklogin")
 	public ResponseEntity<?> checkLogin(@RequestBody Account account) {
 		if (account.getPhone()=="" || account.getPassword()=="") {
@@ -46,23 +71,6 @@ public class LoginController {
 		} else {
 			return new ResponseEntity<String>("Sai mat khau", HttpStatus.OK);	
 		}
-	}
-
-	@PostMapping(value = "/login")
-	public String login(Model model, HttpServletRequest request, HttpSession session) {
-		String phone = request.getParameter("phone-log");
-		String password = request.getParameter("password-log");
-		Account acc = accountService.findOneByPhoneAndPassword(phone, password);
-		if(acc!=null) {
-			if(session.getAttribute("current_account")==null) {
-				session.setAttribute("current_account", acc);
-			}
-			if (acc.getRole() == 1) {
-				return "redirect:admin/manager-account";
-			}
-		}
-		session.setAttribute("current_account", acc);
-		return "redirect:post";
 	}
 	
 	@PostMapping(value = "/checkregister")

@@ -33,12 +33,12 @@
                                 <div class="main-menu-inner header-top-navigation">
                                     <nav>
                                         <ul class="main-menu float-right">
-                                            <li class="active"><a href="MyInfo.html">Thông tin</a></li>
-                                            <li><a href="MyPost.html">Bài đăng</a></li> 
-                                            <li><a href="MySavePost.html">Bài đã lưu</a></li> 
-                                            <li><a href="MyFriend.html">Bạn bè</a></li> 
-                                            <li><a href="MyRequest.html">Lời mời kết bạn</a></li> 
-                                            <li><a href="MyFollow.html">Theo dõi</a></li>
+                                            <li class="active"><a href="my-profile">Thông tin</a></li>
+                                            <li><a href="my-post">Bài đăng</a></li> 
+                                            <li><a href="save-post">Bài đã lưu</a></li> 
+                                            <li><a href="friend">Bạn bè</a></li> 
+                                            <li><a href="request">Lời mời kết bạn</a></li> 
+                                            <li><a href="follow">Theo dõi</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -51,61 +51,65 @@
                 <div class="col-10 mx-auto">
                     <div class="about-description mb-4">
                         <div class="tab-content">
-                            <div class="author-desc-title d-flex">
-                                <h6 class="author">Thông tin cá nhân</h6>
-                                </div>
-                            </div>
-                            <form action="#" method="POST" class="signup-inner--form px-3">
-                                <div class="container f-16">
-                                    <div class="row">
-                                        <div class="col-12 row">
-                                            <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Giới thiệu</p>
-                                            <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Thông tin ngắn gọn về bản thân" value="thông tin j đó">
-                                        </div>
-                                        <div class="col-12 row">
-                                            <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Họ tên</p>
-                                            <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Họ tên" value="Nguyễn Văn Tiến">
-                                        </div>
-                                        <div class="col-12 row">
-                                            <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Giới tính</p>
-                                            <select class="form-control col-md-9 col-lg-10 col-12">
-                                                <option class="f-18">1</option>
-                                                <option class="f-18">2</option>
-                                                <option class="f-18" selected>3</option>
-                                                <option class="f-18">4</option>
-                                                <option class="f-18">5</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12 row">
-                                            <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Ngày sinh</p>
-                                            <input class="form-control single-field col-md-9 col-lg-10 col-12 text-muted f-16" type="date" value="2011-08-19" id="example-date-input">
-                                            
-                                        </div>
-                                        <div class="col-12 row">
-                                            <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Số điện thoại</p>
-                                            <input type="tel" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Số điện thoại" value="sdt l,an">
-                                        </div>
-                                        <div class="col-12 row">
-                                            <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Tỉnh thành</p>
-                                            <select class="form-control col-md-9 col-lg-10 col-12">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12 row">
-                                            <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Địa chỉ</p>
-                                            <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Địa chỉ" value="địa chỉ 1">
-                                        </div>
-                                    </div>
-                                </div>
+                        	<form action="edit-profile" method="POST" class="signup-inner--form px-3">
+	                            <div class="author-desc-title d-flex">
+	                                <h6 class="author pt-2">Sửa thông tin cá nhân</h6>
+	                                <div class="post-settings-bar">
+	                                	<input type="submit" class="btn-secondary px-3 py-2 rounded border-0" value="Lưu thay đổi"/>
+	                                </div>
+	                            </div>
+	                            
+	                            <div class="container f-16">
+	                                <div class="row">
+	                                    <div class="col-12 row">
+	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Giới thiệu</p>
+	                                        <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Thông tin ngắn gọn về bản thân" value="thông tin j đó">
+	                                    </div>
+	                                    <div class="col-12 row">
+	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Họ tên</p>
+	                                        <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Họ tên" value="Nguyễn Văn Tiến">
+	                                    </div>
+	                                    <div class="col-12 row">
+	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Giới tính</p>
+	                                        <select class="form-control col-md-9 col-lg-10 col-12">
+	                                            <option class="f-18">1</option>
+	                                            <option class="f-18">2</option>
+	                                            <option class="f-18" selected>3</option>
+	                                            <option class="f-18">4</option>
+	                                            <option class="f-18">5</option>
+	                                        </select>
+	                                    </div>
+	                                    <div class="col-12 row">
+	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Ngày sinh</p>
+	                                        <input class="form-control single-field col-md-9 col-lg-10 col-12 text-muted f-16" type="date" value="2011-08-19" id="example-date-input">
+	                                        
+	                                    </div>
+	                                    <div class="col-12 row">
+	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Số điện thoại</p>
+	                                        <input type="tel" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Số điện thoại" value="sdt l,an">
+	                                    </div>
+	                                    <div class="col-12 row">
+	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Tỉnh thành</p>
+	                                        <select class="form-control col-md-9 col-lg-10 col-12">
+	                                            <option>1</option>
+	                                            <option>2</option>
+	                                            <option>3</option>
+	                                            <option>4</option>
+	                                            <option>5</option>
+	                                        </select>
+	                                    </div>
+	                                    <div class="col-12 row">
+	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Địa chỉ</p>
+	                                        <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Địa chỉ" value="địa chỉ 1">
+	                                    </div>
+	                                </div>
+	                            </div>
                             </form>
-                       </div>
-                  </div>
-             </div>
-         </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <div class="modal fade" id="textbox" aria-labelledby="textbox">

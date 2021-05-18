@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix = "fn"  uri = "http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -65,14 +66,14 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body custom-scroll">
-                                                <textarea name="share" class="share-field-big custom-scroll" placeholder="Hãy viết gì đó"></textarea>
+                                                <textarea name="content" class="share-field-big custom-scroll" placeholder="Hãy viết gì đó"></textarea>
                                             </div>
                                             <div class="">
                                                 <div class="container">
                                                     <div class="panel my-2">
                                                         <div class="button_outer">
                                                             <div class="btn_upload">
-                                                                <input type="file" id="upload_file" name="">
+                                                                <input type="file" id="upload_file" name="file">
                                                                 Thêm ảnh
                                                             </div>
                                                             <div class="processing_bar"></div>
@@ -114,7 +115,9 @@
 	
 	                                <div class="posted-author">
 	                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-	                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
+	                                    <span class="post-time">
+	                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+	                                    </span>
 	                                </div>
 	
 	                                <div class="post-settings-bar">
@@ -133,7 +136,15 @@
 	                            <!-- post title start -->
 	                            <div class="post-content">
 	                            	<c:if test="${post.post_content.length() > 300 }">
-	                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+	                            		<p class="post-desc">
+	                            			${fn:substring(post.post_content, 0, 300) }
+	                            			<span class="text-blue post-more">...xem thêm</span>
+	                            			<span class="more-content display-0">
+	                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+	                            				<span class="text-blue post-short">thu gọn</span>
+	                            			</span>
+	                            			
+	                            		</p>
 	                            	</c:if>
 	                                <c:if test="${post.post_content.length() <= 300 }">
 	                            		<p class="post-desc">${post.post_content}</p>
@@ -148,29 +159,22 @@
 		                                </div>
 		                            </c:if>
 	                                <div class="post-meta">
-	                                    <button class="post-meta-like">
-	                                        <i class="bi bi-heart-beat"></i>
-	                                        <span>${post.getLike().size() }</span>
-	                                        <strong>201</strong>
+	                                    <button class="post-meta-like" data-postId="${post.post_id }">
+	                                        <i class="fa fa-heart"></i>
+	                                        <span class="lh-16">${post.getLike().size() }</span>
 	                                    </button>
 	                                    <ul class="comment-share-meta">
-	                                        <li>
+	                                        <li class="mr-3">
 	                                            <button class="post-comment">
 	                                                <i class="bi bi-chat-bubble"></i>
-	                                                <span>${post.getComment().size() }</span>
-	                                            </button>
-	                                        </li>
-	                                        <li>
-	                                            <button class="post-share">
-	                                                <i class="bi bi-share"></i>
-	                                                <span>02</span>
+	                                                <span class="lh-16">${post.getComment().size() }</span>
 	                                            </button>
 	                                        </li>
 	                                    </ul>
 	                                </div>
 	                                <div class="mt-1 ml-2">
 	                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-	                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
+	                                    <p class="text-success display-0" id="bl-02">Ẩn bớt bình luận</p>
 	                                </div>
 	                                <div class="row mb-2">
 	                                    <a href="#" class="col-1 px-2 mr-2">
@@ -181,42 +185,48 @@
 	                                    <input class="col-10 form-control rounded" />
 	                                </div>
 	                                <div id="com-area-1">
-	                                	<c:forEach var="comment" items="${post.getComment() }">
+	                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
 	                                		<div class="unorder-list mb-2 border-bot-light">
-	                                        <div class="profile-thumb">
-	                                            <a href="#">
-	                                                <figure class="profile-thumb-small">
-	                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-	                                                </figure>
-	                                            </a>
-	                                        </div>
-	                                        <div class="unorder-list-info with-500">
-	                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-	                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-	                                            <div>
-	                                                <p>${comment.comment_content }</p>
-	                                            </div>
-	                                        </div>
-	                                    </div>
+		                                        <div class="profile-thumb">
+		                                            <a href="#">
+		                                                <figure class="profile-thumb-small">
+		                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+		                                                </figure>
+		                                            </a>
+		                                        </div>
+		                                        <div class="unorder-list-info with-500">
+		                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+		                                            <p class="text-muted">
+		                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+		                                            </p>
+		                                            <div>
+		                                                <p>${comment.comment_content }</p>
+		                                            </div>
+		                                        </div>
+		                                    </div>
 	                                	</c:forEach>
 	                                </div>
-	                                <div class="hide-class" id="com-area-2">
-	                                    <div class="unorder-list mb-2 border-bot-light">
-	                                        <div class="profile-thumb">
-	                                            <a href="#">
-	                                                <figure class="profile-thumb-small">
-	                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-	                                                </figure>
-	                                            </a>
-	                                        </div>
-	                                        <div class="unorder-list-info with-500">
-	                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-	                                            <p class="text-muted">20 min ago</p>
-	                                            <div>
-	                                                <p>Bài viết rất hay</p>
-	                                            </div>
-	                                        </div>
-	                                    </div>
+	                                <div class="display-0" id="com-area-2">
+	                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+	                                		<div class="unorder-list mb-2 border-bot-light">
+		                                        <div class="profile-thumb">
+		                                            <a href="#">
+		                                                <figure class="profile-thumb-small">
+		                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+		                                                </figure>
+		                                            </a>
+		                                        </div>
+		                                        <div class="unorder-list-info with-500">
+		                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+		                                            <p class="text-muted">
+														<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+													</p>
+		                                            <div>
+		                                                <p>${comment.comment_content }</p>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+	                                	</c:forEach>
 	                                    <div class="unorder-list mb-2 border-bot-light">
 	                                        <div class="profile-thumb">
 	                                            <a href="#">
@@ -380,6 +390,5 @@
     </div>
 	
 	<jsp:include page="/pages/layout/footer.jsp" />
-   
 </body>
 </html>

@@ -12,6 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,9 +31,13 @@ public class Account {
 	@Column(name = "role")
 	private int role;
 	
+	@NotNull(message = "Tên không được để trống")
 	@Column(name = "account_status", columnDefinition = "bit not null")
 	private boolean account_status;
 	
+	@NotBlank(message = "mat khau khong duoc de trong")
+	@Min(value=8, message = "Mật khẩu phải dài từ 8 ký tự")
+	@Max(value=20, message = "Mật khẩu không được dài quá 20 ký tự")
 	@Column(name = "password", columnDefinition = "varchar(20) not null")
 	private String password;
 	
@@ -49,6 +57,7 @@ public class Account {
 	@Column(name = "birthday", columnDefinition = "date")
 	private Date birthday;
 	
+	@NotNull(message = "SDT khong de trong")
 	@Column(name = "phone", columnDefinition = "varchar(10) not null")
 	private String phone;
 	

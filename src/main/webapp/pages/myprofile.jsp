@@ -68,14 +68,80 @@
                                 </div>
                             </div>
                             <div class="container f-16">
-                                <p>Giới thiệu: Sinh viên đang học ở Huế</p>
-                                <p>Họ tên: Nguyễn Văn Tiến</p>
-                                <p>Giới tính: Nam</p>
-                                <p>Ngày sinh: 28-03-2000</p>
-                                <p>Số điện thoại: 0382783422</p>
-                                <p>Email: tien@gmail.com</p>
-                                <p>Tỉnh thành: Thừa Thiên Huế</p>
-                                <p>Địa chỉ: Hương Phong, Hương Trà, Thừa Thiên Huế</p>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Giới thiệu:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<p>${current_account.introduction }</p>
+                            		</div>
+                            	</div>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Họ tên:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<p>${current_account.name }</p>
+                            		</div>
+                            	</div>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Giới tính:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<c:choose>
+		                                	<c:when test="${current_account.gender == 1 }">
+		                                		<p>Nam</p>
+		                                	</c:when>
+		                                	<c:when test="${current_account.gender == 2 }">
+		                                		<p>Nữ</p>
+		                                	</c:when>
+		                                	<c:otherwise>
+		                                		<p>Chưa biết</p>
+		                                	</c:otherwise>
+		                                </c:choose>
+                            		</div>
+                            	</div>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Ngày sinh:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<p><fmt:formatDate type="date" pattern="dd-MM-yyyy" value="${current_account.birthday }"/></p>
+                            		</div>
+                            	</div>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Số điện thoại:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<p>${current_account.phone }</p>
+                            		</div>
+                            	</div>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Email:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<p>${current_account.email }</p>
+                            		</div>
+                            	</div>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Tỉnh thành:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<p>${current_account.getProvince().province_name }</p>
+                            		</div>
+                            	</div>
+                            	<div class="row mb-3 border-opacity">
+                            		<div class="col-sm-3 col-2">
+                            			<p>Địa chỉ:</p>
+                            		</div>
+                            		<div class="col-sm-9 col-10">
+                            			<p>${current_account.address }</p>
+                            		</div>
+                            	</div>
                             </div>
                        </div>
                   </div>

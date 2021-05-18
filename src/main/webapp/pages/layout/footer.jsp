@@ -27,3 +27,5 @@
 <script src="${contextPath}/resources/assets/js/plugins/isotope.pkgd.min.js"></script>
 <!-- Main JS -->
 <script src="${contextPath}/resources/assets/js/main.js"></script>
+
+<script src="${contextPath}/resources/contents/js/post.js"></script>
