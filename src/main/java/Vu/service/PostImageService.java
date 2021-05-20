@@ -20,4 +20,10 @@ public class PostImageService {
 		postImageRepository.delete(id);
 	}
 	
+	public void deleteByPost(int postId) {
+		for(Post_Image pi : postImageRepository.findAllByPost(postId)) {
+			postImageRepository.delete(pi.getImage_id());
+		}
+	}
+	
 }

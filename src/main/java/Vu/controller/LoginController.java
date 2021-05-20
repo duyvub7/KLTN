@@ -35,10 +35,11 @@ public class LoginController {
 	
 	@PostMapping(value = "/login")
 	public String login(Model model, HttpServletRequest request, HttpSession session,
-			@Valid @ModelAttribute("account") Account account, BindingResult br ) {
+			 @ModelAttribute("account") @Valid Account account, BindingResult br ) {
 		if(br.hasErrors()) {
 			return "login";
 		}
+		
 		Account acc = accountService.findOneByPhoneAndPassword(account.getPhone(), account.getPassword());
 		if(acc!=null) {
 			session.setAttribute("current_account", acc);
@@ -147,6 +148,6 @@ public class LoginController {
 	@GetMapping("/logout")
 	public String registerget(HttpSession session) {
 		session.removeAttribute("recently_account");
-		return "login";
+		return "redirect:/login";
 	}
 }

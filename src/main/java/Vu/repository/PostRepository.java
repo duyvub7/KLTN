@@ -15,6 +15,16 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query(value="select * from Post where post_type like :type order by post_date desc", nativeQuery = true)
 	List<Post> findAll( @Param("type") int type );
 	
+	@Query(value="select * from Post where post_type like :type and province_id like :provinceId order by post_date desc", nativeQuery = true)
+	List<Post> findAll( @Param("type") int type, @Param("provinceId") int provinceId );
+	
+	@Query(value="select p.*, COUNT(pl.like_id) from Post p\r\n"
+			+ "	inner join Post_Like pl on p.post_id = pl.post_id\r\n"
+			+ " where post_type like :type\r\n"
+			+ " group by p.post_id, p.post_status, p.post_type, p.post_date, p.post_content, p.price, p.account_id, p.province_id\r\n"
+			+ " order by COUNT(pl.like_id) desc", nativeQuery = true)
+	List<Post> findAll_Top( @Param("type") int type );
+	
 	@Query(value="select p.*\r\n"
 			+ "from Post p inner join (select top 5 p.post_id, COUNT(pl.like_id) as 'like_count'\r\n"
 			+ "					from Post p\r\n"
@@ -39,4 +49,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 			+ "	inner join Post_Save ps on p.post_id = ps.post_id\r\n"
 			+ "where ps.account_id = :id and p.post_type = :type", nativeQuery = true)
 	List<Post> findAllSavePost( @Param("id") int id, @Param("type") int type );
+	
 }

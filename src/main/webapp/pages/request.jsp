@@ -23,7 +23,7 @@
                         <div class="col-lg-3 col-md-3">
                             <div class="profile-picture-box">
                                 <figure class="profile-picture">
-                                    <a href="profile.html">
+                                    <a href="my-profile">
                                         <img src="${current_account.avatar }" alt="profile picture">
                                     </a>
                                 </figure>

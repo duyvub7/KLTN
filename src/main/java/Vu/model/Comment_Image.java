@@ -16,7 +16,7 @@ public class Comment_Image {
 	@Column(name = "image_id")
 	private int image_id;
 	
-	@Column(name = "url", columnDefinition = "varchar(50)")
+	@Column(name = "url", columnDefinition = "varchar(100)")
 	private String url;
 	
 	@Column(name = "comment_id")

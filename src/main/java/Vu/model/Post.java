@@ -55,6 +55,10 @@ public class Post {
 	private Account account;
 	
 	@ManyToOne
+	@JoinColumn(name = "post_type", referencedColumnName = "type_id", insertable = false, updatable = false)
+	private PostType type;
+	
+	@ManyToOne
 	@JoinColumn(name = "province_id", referencedColumnName = "province_id", insertable = false, updatable = false)
 	private Province province;
 	
@@ -152,6 +156,14 @@ public class Post {
 
 	public void setProvince(Province province) {
 		this.province = province;
+	}
+
+	public PostType getType() {
+		return type;
+	}
+
+	public void setType(PostType type) {
+		this.type = type;
 	}
 
 	public List<Post_Image> getImage() {

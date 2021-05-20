@@ -11,6 +11,9 @@
 <script src="${contextPath}/resources/assets/js/vendor/popper.min.js"></script>
 <!-- Bootstrap JS -->
 <script src="${contextPath}/resources/assets/js/vendor/bootstrap.min.js"></script>
+<!-- select 2 -->
+<script type="text/javascript" src="${contextPath}/resources/assets/bower_components/js/select2.full.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/assets/bower_components/js/select2-custom.js"></script>
 <!-- Slick Slider JS -->
 <script src="${contextPath}/resources/assets/js/plugins/slick.min.js"></script>
 <!-- nice select JS -->

@@ -24,7 +24,7 @@
                         <div class="col-lg-3 col-md-3">
                             <div class="profile-picture-box">
                                 <figure class="profile-picture">
-                                    <a href="profile.html">
+                                    <a href="my-profile">
                                         <img src="${current_account.avatar }" alt="profile picture">
                                     </a>
                                 </figure>
@@ -91,13 +91,12 @@
                                         </div>
                                         
                                         <c:forEach var="post" items="${listPost0 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card post-num-${post.post_id }">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
 					                                <div class="profile-thumb">
-					                                    <a href="#">
+					                                    <a href="${contextPath}/profile/${post.getAccount_id() }">
 					                                        <figure class="profile-thumb-middle">
 					                                            <img src="${post.getAccount().getAvatar() }" alt="profile picture">
 					                                        </figure>
@@ -106,10 +105,22 @@
 					                                <!-- profile picture end -->
 					
 					                                <div class="posted-author">
-					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
+					                                    <h6 class="author"><a href="${contextPath}/profile/${post.getAccount_id() }">${post.getAccount().getName() }</a></h6>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    	<c:if test="${post.post_type != 1 }">
+					                                    		<c:choose>
+						                                    		<c:when test="${post.post_status == true }">
+						                                    			<strong class="pl-3">Đang sẵng sàng</strong>
+						                                    		</c:when>
+						                                    		<c:otherwise>
+						                                    			<strong class="pl-3">Đã hết hạn</strong>
+						                                    		</c:otherwise>
+						                                    	</c:choose>
+					                                    	</c:if>
+					                                    </span>
+					                                    <c:if test="${post.post_type != 1 }">
+					                                    	<p>
 						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
 						                                        <i class="fa fa-money mr-1"></i>
 							                                        <span class="text-info">
@@ -125,9 +136,10 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button></li>
+					                                            <li><button class="remove-mypost" data-id="${post.post_id }" data-cont="${fn:substring(post.post_content, 0, 100) }">
+	                                            					Xóa bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
@@ -157,9 +169,22 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="fa fa-heart"></i>
-					                                        <span class="lh-16">${post.getLike().size() }</span>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
 					                                        <li class="mr-3">
@@ -170,518 +195,86 @@
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success display-0" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
-					                                <div id="com-area-1">
+					                                <div class="com-area-1">
 					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
-						                                            <div>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="display-0" id="com-area-2">
+					                                <div class="display-0 com-area-2">
 					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
-						                                            <div>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
 					                                	</c:forEach>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
-                                        
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-2.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                                    <span class="post-time">20 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery">
-                                                    <figure class="post-thumb img-popup">
-                                                        <a href="assets/images/post/post-large-1.jpg">
-                                                            <img src="assets/images/post/2.jpg" alt="post image">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 201 people like this</span>
-                                                        <strong>201</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="mt-1 ml-2">
-                                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-                                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-                                                </div>
-                                                <div class="row mb-2">
-                                                    <a href="#" class="col-1 px-2 mr-1">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                    <input class="col-10 form-control rounded" />
-                                                </div>
-                                                <div id="com-area-1">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-4.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="hide-class" id="com-area-2">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- post status end -->
-                
-                                        <!-- post status start -->
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-7.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                                    <span class="post-time">15 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc pb-0">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for
-                                                </p>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 206 people like this</span>
-                                                        <strong>206</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- post status end -->
-                
-                                        <!-- post status start -->
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Kate Palson</a></h6>
-                                                    <span class="post-time">35 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery img-gallery">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-8">
-                                                            <figure class="post-thumb">
-                                                                <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
-                                                                    <img src="assets/images/post/6.jpg" alt="post image">
-                                                                </a>
-                                                            </figure>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-3.jpg">
-                                                                            <img src="assets/images/post/14.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-4.jpg">
-                                                                            <img src="assets/images/post/15.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-5.jpg">
-                                                                            <img src="assets/images/post/9.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 70 people like this</span>
-                                                        <strong>70</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>28</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>12</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- post status end -->
-                
-                                        <!-- post status start -->
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-4.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">william henry</a></h6>
-                                                    <span class="post-time">35 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="plyr__video-embed plyr-youtube">
-                                                    <iframe src="https://www.youtube.com/embed/WeA7edXsU40" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 112 people like this</span>
-                                                        <strong>112</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>36</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>08</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="two">
                                         <div class="card card-small">
@@ -689,7 +282,7 @@
                                                 <div class="profile-thumb">
                                                     <a href="#">
                                                         <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
+                                                            <img src="${current_account.avatar }" alt="profile picture">
                                                         </figure>
                                                     </a>
                                                 </div>
@@ -702,8 +295,7 @@
                                             </div>
                                         </div>
                                         <c:forEach var="post" items="${listPost1 }">
-											<!-- post status start -->
-					                        <div class="card">
+					                        <div class="card post-num-${post.post_id }">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -717,8 +309,10 @@
 					                                <!-- profile picture end -->
 					
 					                                <div class="posted-author">
-					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
+					                                    <h6 class="author"><a href="${contextPath}/profile/${post.getAccount_id() }">${post.getAccount().getName() }</a></h6>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    </span>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -727,16 +321,25 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button></li>
+					                                            <li><button class="remove-mypost" data-id="${post.post_id }" data-cont="${fn:substring(post.post_content, 0, 100) }">
+	                                            					Xóa bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -751,341 +354,112 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
-					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
-                
-                                        <!-- post status start -->
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-7.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                                    <span class="post-time">15 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc pb-0">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for
-                                                </p>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 206 people like this</span>
-                                                        <strong>206</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- post status end -->
-                
-                                        <!-- post status start -->
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Kate Palson</a></h6>
-                                                    <span class="post-time">35 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery img-gallery">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-8">
-                                                            <figure class="post-thumb">
-                                                                <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
-                                                                    <img src="assets/images/post/6.jpg" alt="post image">
-                                                                </a>
-                                                            </figure>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-3.jpg">
-                                                                            <img src="assets/images/post/14.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-4.jpg">
-                                                                            <img src="assets/images/post/15.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-5.jpg">
-                                                                            <img src="assets/images/post/9.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 70 people like this</span>
-                                                        <strong>70</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>28</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>12</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- post status end -->
-                
-                                        <!-- post status start -->
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-4.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">william henry</a></h6>
-                                                    <span class="post-time">35 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="plyr__video-embed plyr-youtube">
-                                                    <iframe src="https://www.youtube.com/embed/WeA7edXsU40" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 112 people like this</span>
-                                                        <strong>112</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>36</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>08</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="three">
                                         <div class="card card-small">
@@ -1093,7 +467,7 @@
                                                 <div class="profile-thumb">
                                                     <a href="#">
                                                         <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
+                                                            <img src="${current_account.avatar }" alt="profile picture">
                                                         </figure>
                                                     </a>
                                                 </div>
@@ -1107,8 +481,7 @@
                                         </div>
                                         
                                         <c:forEach var="post" items="${listPost2 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card post-num-${post.post_id }">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -1122,17 +495,25 @@
 					                                <!-- profile picture end -->
 					
 					                                <div class="posted-author">
-					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
-						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
-						                                        <i class="fa fa-money mr-1"></i>
-							                                        <span class="text-info">
-							                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
-							                                        </span>
-						                                    </p>
-					                                    </c:if>
+					                                    <h6 class="author"><a href="${contextPath}/profile/${post.getAccount_id() }">${post.getAccount().getName() }</a></h6>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    	<c:choose>
+					                                    		<c:when test="${post.post_status == true }">
+					                                    			<strong class="pl-3">Đang cho thuê</strong>
+					                                    		</c:when>
+					                                    		<c:otherwise>
+					                                    			<strong class="pl-3">Đã cho thuê</strong>
+					                                    		</c:otherwise>
+					                                    	</c:choose>
+					                                    </span>
+					                                    <p>
+					                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
+					                                        <i class="fa fa-money mr-1"></i>
+						                                        <span class="text-info">
+						                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
+						                                        </span>
+					                                    </p>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -1141,16 +522,25 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button></li>
+					                                            <li><button class="remove-mypost" data-id="${post.post_id }" data-cont="${fn:substring(post.post_content, 0, 100) }">
+	                                            					Xóa bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -1165,447 +555,112 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
-					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
-                                        
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-2.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                                    <span class="post-time">20 min ago</span>
-                                                    <p>
-                                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">Huế</span>
-                                                        <i class="fa fa-money mr-1"></i><span class="text-info">1.000.000 đ</span>
-                                                    </p>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery">
-                                                    <figure class="post-thumb img-popup">
-                                                        <a href="assets/images/post/post-large-1.jpg">
-                                                            <img src="assets/images/post/2.jpg" alt="post image">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 201 people like this</span>
-                                                        <strong>201</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="mt-1 ml-2">
-                                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-                                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-                                                </div>
-                                                <div class="row mb-2">
-                                                    <a href="#" class="col-1 px-2 mr-1">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                    <input class="col-10 form-control rounded" />
-                                                </div>
-                                                <div id="com-area-1">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-4.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="hide-class" id="com-area-2">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-7.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                                    <span class="post-time">15 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc pb-0">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for
-                                                </p>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 206 people like this</span>
-                                                        <strong>206</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Kate Palson</a></h6>
-                                                    <span class="post-time">35 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery img-gallery">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-8">
-                                                            <figure class="post-thumb">
-                                                                <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
-                                                                    <img src="assets/images/post/6.jpg" alt="post image">
-                                                                </a>
-                                                            </figure>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-3.jpg">
-                                                                            <img src="assets/images/post/14.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-4.jpg">
-                                                                            <img src="assets/images/post/15.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-5.jpg">
-                                                                            <img src="assets/images/post/9.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 70 people like this</span>
-                                                        <strong>70</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>28</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>12</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="four">
                                         <div class="card card-small">
@@ -1613,7 +668,7 @@
                                                 <div class="profile-thumb">
                                                     <a href="#">
                                                         <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
+                                                            <img src="${current_account.avatar }" alt="profile picture">
                                                         </figure>
                                                     </a>
                                                 </div>
@@ -1627,8 +682,7 @@
                                         </div>
                                         
                                         <c:forEach var="post" items="${listPost3 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card post-num-${post.post_id }">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -1642,17 +696,25 @@
 					                                <!-- profile picture end -->
 					
 					                                <div class="posted-author">
-					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
-						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
-						                                        <i class="fa fa-money mr-1"></i>
-							                                        <span class="text-info">
-							                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
-							                                        </span>
-						                                    </p>
-					                                    </c:if>
+					                                    <h6 class="author"><a href="${contextPath}/profile/${post.getAccount_id() }">${post.getAccount().getName() }</a></h6>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    	<c:choose>
+					                                    		<c:when test="${post.post_status == true }">
+					                                    			<strong class="pl-3">Đang tìm người</strong>
+					                                    		</c:when>
+					                                    		<c:otherwise>
+					                                    			<strong class="pl-3">Đã hết hạn</strong>
+					                                    		</c:otherwise>
+					                                    	</c:choose>
+					                                    </span>
+					                                    <p>
+					                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
+					                                        <i class="fa fa-money mr-1"></i>
+						                                        <span class="text-info">
+						                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
+						                                        </span>
+					                                    </p>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -1661,16 +723,25 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button></li>
+					                                            <li><button class="remove-mypost" data-id="${post.post_id }" data-cont="${fn:substring(post.post_content, 0, 100) }">
+	                                            					Xóa bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -1685,447 +756,112 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
-					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
-                                        
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-2.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                                    <span class="post-time">20 min ago</span>
-                                                    <p>
-                                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">Huế</span>
-                                                        <i class="fa fa-money mr-1"></i><span class="text-info">1.000.000 đ</span>
-                                                    </p>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery">
-                                                    <figure class="post-thumb img-popup">
-                                                        <a href="assets/images/post/post-large-1.jpg">
-                                                            <img src="assets/images/post/2.jpg" alt="post image">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 201 people like this</span>
-                                                        <strong>201</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="mt-1 ml-2">
-                                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-                                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-                                                </div>
-                                                <div class="row mb-2">
-                                                    <a href="#" class="col-1 px-2 mr-1">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                    <input class="col-10 form-control rounded" />
-                                                </div>
-                                                <div id="com-area-1">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-4.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="hide-class" id="com-area-2">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-7.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                                    <span class="post-time">15 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc pb-0">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for
-                                                </p>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 206 people like this</span>
-                                                        <strong>206</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Kate Palson</a></h6>
-                                                    <span class="post-time">35 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery img-gallery">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-8">
-                                                            <figure class="post-thumb">
-                                                                <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
-                                                                    <img src="assets/images/post/6.jpg" alt="post image">
-                                                                </a>
-                                                            </figure>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-3.jpg">
-                                                                            <img src="assets/images/post/14.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-4.jpg">
-                                                                            <img src="assets/images/post/15.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-5.jpg">
-                                                                            <img src="assets/images/post/9.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 70 people like this</span>
-                                                        <strong>70</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>28</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>12</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="five">
                                         <div class="card card-small">
@@ -2133,7 +869,7 @@
                                                 <div class="profile-thumb">
                                                     <a href="#">
                                                         <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
+                                                            <img src="${current_account.avatar }" alt="profile picture">
                                                         </figure>
                                                     </a>
                                                 </div>
@@ -2147,8 +883,7 @@
                                         </div>
                                         
                                         <c:forEach var="post" items="${listPost4 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card post-num-${post.post_id }">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -2162,17 +897,25 @@
 					                                <!-- profile picture end -->
 					
 					                                <div class="posted-author">
-					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
-						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
-						                                        <i class="fa fa-money mr-1"></i>
-							                                        <span class="text-info">
-							                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
-							                                        </span>
-						                                    </p>
-					                                    </c:if>
+					                                    <h6 class="author"><a href="${contextPath}/profile/${post.getAccount_id() }">${post.getAccount().getName() }</a></h6>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    	<c:choose>
+					                                    		<c:when test="${post.post_status == true }">
+					                                    			<strong class="pl-3">Đang bán</strong>
+					                                    		</c:when>
+					                                    		<c:otherwise>
+					                                    			<strong class="pl-3">Đã bán</strong>
+					                                    		</c:otherwise>
+					                                    	</c:choose>
+					                                    </span>
+					                                    <p>
+					                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
+					                                        <i class="fa fa-money mr-1"></i>
+						                                        <span class="text-info">
+						                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
+						                                        </span>
+					                                    </p>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -2181,16 +924,25 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button></li>
+					                                            <li><button class="remove-mypost" data-id="${post.post_id }" data-cont="${fn:substring(post.post_content, 0, 100) }">
+	                                            					Xóa bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -2205,447 +957,112 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
-					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
+						                                        <div class="profile-thumb">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <div class="mt-back-5">
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
-										
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-2.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                                    <span class="post-time">20 min ago</span>
-                                                    <p>
-                                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">Huế</span>
-                                                        <i class="fa fa-money mr-1"></i><span class="text-info">1.000.000 đ</span>
-                                                    </p>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery">
-                                                    <figure class="post-thumb img-popup">
-                                                        <a href="assets/images/post/post-large-1.jpg">
-                                                            <img src="assets/images/post/2.jpg" alt="post image">
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 201 people like this</span>
-                                                        <strong>201</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="mt-1 ml-2">
-                                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-                                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-                                                </div>
-                                                <div class="row mb-2">
-                                                    <a href="#" class="col-1 px-2 mr-1">
-                                                        <figure class="profile-thumb-small">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                    <input class="col-10 form-control rounded" />
-                                                </div>
-                                                <div id="com-area-1">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-4.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="hide-class" id="com-area-2">
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="unorder-list mb-2 border-bot-light">
-                                                        <div class="profile-thumb">
-                                                            <a href="#">
-                                                                <figure class="profile-thumb-small">
-                                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-                                                                </figure>
-                                                            </a>
-                                                        </div>
-                                                        <div class="unorder-list-info with-500">
-                                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-                                                            <p class="text-muted">20 min ago</p>
-                                                            <div>
-                                                                <p>Bài đăng viết lủng củng, hơi non :)) Bài đăng viết lủng củng, hơi non :))
-                                                                    Bài đăng viết lủng củng, hơi non :))
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-7.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Jon Wileyam</a></h6>
-                                                    <span class="post-time">15 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc pb-0">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for
-                                                </p>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 206 people like this</span>
-                                                        <strong>206</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>41</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>07</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <!-- post title start -->
-                                            <div class="post-title d-flex align-items-center">
-                                                <!-- profile picture end -->
-                                                <div class="profile-thumb">
-                                                    <a href="#">
-                                                        <figure class="profile-thumb-middle">
-                                                            <img src="assets/images/profile/avatar-1.jpg" alt="profile picture">
-                                                        </figure>
-                                                    </a>
-                                                </div>
-                                                <!-- profile picture end -->
-                
-                                                <div class="posted-author">
-                                                    <h6 class="author"><a href="profile.html">Kate Palson</a></h6>
-                                                    <span class="post-time">35 min ago</span>
-                                                </div>
-                
-                                                <div class="post-settings-bar">
-                                                    <span></span>
-                                                    <span></span>
-                                                    <span></span>
-                                                    <div class="post-settings arrow-shape">
-                                                        <ul>
-                                                            <li><button>copy link to adda</button></li>
-                                                            <li><button>edit post</button></li>
-                                                            <li><button>embed adda</button></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- post title start -->
-                                            <div class="post-content">
-                                                <p class="post-desc">
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                                    default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                                    in their infancy.
-                                                </p>
-                                                <div class="post-thumb-gallery img-gallery">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-8">
-                                                            <figure class="post-thumb">
-                                                                <a class="gallery-selector" href="assets/images/post/post-large-2.jpg">
-                                                                    <img src="assets/images/post/6.jpg" alt="post image">
-                                                                </a>
-                                                            </figure>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-3.jpg">
-                                                                            <img src="assets/images/post/14.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-4.jpg">
-                                                                            <img src="assets/images/post/15.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <figure class="post-thumb">
-                                                                        <a class="gallery-selector" href="assets/images/post/post-large-5.jpg">
-                                                                            <img src="assets/images/post/9.jpg" alt="post image">
-                                                                        </a>
-                                                                    </figure>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="post-meta">
-                                                    <button class="post-meta-like">
-                                                        <i class="bi bi-heart-beat"></i>
-                                                        <span>You and 70 people like this</span>
-                                                        <strong>70</strong>
-                                                    </button>
-                                                    <ul class="comment-share-meta">
-                                                        <li>
-                                                            <button class="post-comment">
-                                                                <i class="bi bi-chat-bubble"></i>
-                                                                <span>28</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button class="post-share">
-                                                                <i class="bi bi-share"></i>
-                                                                <span>12</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2653,7 +1070,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
     </main>
 
@@ -2668,7 +1084,7 @@
                     </div>
                     <div class="row ml-3">
                         <div class="col-6 my-3">
-                            <button id="type1" class="post-share-btn" data-dismiss="modal">Chia sẻ kinh nghiệm</button>
+                            <button id="type1" class="post-share-btn" data-dismiss="modal">Chia sẻ bài viết</button>
                         </div>
                         <div class="col-6 my-3">
                             <button id="type2" class="post-share-btn" data-dismiss="modal">Cho thuê trọ</button>
@@ -2687,7 +1103,7 @@
     <div class="modal fade" id="textbox" aria-labelledby="textbox">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="addpost1" method="POST" id="add-post-form">
+                <form action="add-post" method="POST" enctype="multipart/form-data" id="add-post-form">
                     <div class="modal-header">
                         <h5 class="modal-title" id="title-modal">Chia sẻ bài đăng của bạn</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -2695,14 +1111,14 @@
                         </button>
                     </div>
                     <div class="modal-body custom-scroll">
-                        <textarea name="share" class="share-field-big custom-scroll" placeholder="Hãy viết gì đó"></textarea>
+                        <textarea name="content" class="share-field-big custom-scroll" placeholder="Hãy viết gì đó"></textarea>
                     </div>
                     <div class="">
                         <div class="container">
                             <div class="panel my-2">
                                 <div class="button_outer">
                                     <div class="btn_upload">
-                                        <input type="file" id="upload_file" name="">
+                                        <input type="file" id="upload_file" name="file">
                                         Thêm ảnh
                                     </div>
                                     <div class="processing_bar"></div>
@@ -2720,11 +1136,9 @@
                                     <p class="col-md-4 col-lg-4 col-12 pt-2">Tỉnh/ Thành phố :</p>
                                     <div class="select-small">
                                         <select class="js-example-basic-single col-md-8 col-lg-8 col-12 with-300">
-                                            <option class="col-12" value="AL">Alabama</option>
-                                            <option value="WY">Wyoming</option>
-                                            <option value="WY">Peter</option>
-                                            <option value="WY">Hanry Die</option>
-                                            <option value="WY">John Doe</option>
+                                            <c:forEach var="province" items="${listProvince }">
+                                        		<option value="${province.province_id }">${province.province_name }</option>
+                                        	</c:forEach>
                                         </select>
                                     </div>
                                 </div>
@@ -2741,9 +1155,29 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="post-share-btn" data-dismiss="modal">Hủy</button>
-                        <input type="submit" class="post-share-btn border-0" value="Đăng bài">\
+                        <input type="submit" class="post-share-btn border-0" value="Đăng bài">
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modal-confirm">
+        <div class="modal-dialog mt-5 pt-5">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Xác nhận xóa bài đăng</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-content">
+                        <p class="my-4 mx-3 f-16" id="delete-content">Xác nhận xóa</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="post-share-btn" data-dismiss="modal">Hủy</button>
+                        <button id="deletePost-btn" class="post-share-btn border-0" data-id="0">Xóa</button>
+                    </div>
             </div>
         </div>
     </div>

@@ -14,6 +14,14 @@ public class NotificationService {
 	@Autowired
 	private NotificationRepository notificationRepository;
 	
+	public Notification findOne( int id) {
+		return notificationRepository.findOne(id);
+	}
+	
+	public List<Notification> findAll() {
+		return notificationRepository.findAll();
+	}
+	
 	public List<Notification> findAllByAccountId( int id ) {
 		return notificationRepository.findAllByAccountId(id);
 	}

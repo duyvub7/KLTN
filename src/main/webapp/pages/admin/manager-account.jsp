@@ -93,17 +93,17 @@
                                 </a>
                                 <ul class="pcoded-submenu">
                                     <li class="active">
-                                        <a href="Manager-account.html">
+                                        <a href="manager-account">
                                             <span class="pcoded-mtext">Tất cả</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-availableaccount">
                                             <span class="pcoded-mtext">Khả dụng</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-blockaccount">
                                             <span class="pcoded-mtext">Bị khóa</span>
                                         </a>
                                     </li>
@@ -116,32 +116,32 @@
                                 </a>
                                 <ul class="pcoded-submenu">
                                     <li class="">
-                                        <a href="Manager-post.html">
+                                        <a href="manager-post">
                                             <span class="pcoded-mtext">Tất cả</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-post1">
                                             <span class="pcoded-mtext">Bài viết</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-post2">
                                             <span class="pcoded-mtext">Phòng trọ</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-post3">
                                             <span class="pcoded-mtext">Ở ghép</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-post4">
                                             <span class="pcoded-mtext">Đồ dùng</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-postreport">
                                             <span class="pcoded-mtext">Bài viết bị báo cáo</span>
                                         </a>
                                     </li>
@@ -154,17 +154,17 @@
                                 </a>
                                 <ul class="pcoded-submenu">
                                     <li class="">
-                                        <a href="admin-manager-account-user.htm">
+                                        <a href="manager-notification">
                                             <span class="pcoded-mtext">Tất cả</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-notification-toall">
                                             <span class="pcoded-mtext">Gửi cho toàn bộ</span>
                                         </a>
                                     </li>
                                     <li class="">
-                                        <a href="admin-manager-account-owner.htm">
+                                        <a href="manager-notification-toaccount">
                                             <span class="pcoded-mtext">Gửi cho cá nhân</span>
                                         </a>
                                     </li>
@@ -180,7 +180,7 @@
                                 </a>
                             </li>
                             <li class="">
-                                <a href="Mypass-change.html">
+                                <a href="change-pass">
                                     <span class="pcoded-micon"><i class="fa fa-key"></i></span>
                                     <span class="pcoded-mtext">Đổi mật khẩu</span>
                                 </a>
@@ -213,7 +213,7 @@
                                                                 <th>Trạng thái</th>
                                                                 <th>Giới tính</th>
                                                                 <th>Ngày sinh</th>
-                                                                <th>Chi tiết</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

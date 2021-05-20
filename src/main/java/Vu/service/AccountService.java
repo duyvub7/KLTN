@@ -1,6 +1,9 @@
 package Vu.service;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +16,11 @@ public class AccountService {
 
 	@Autowired
 	private AccountRepository accountRepository;
-
+	
+	public Account findOne( int id ){
+		return accountRepository.findOne( id );
+	}
+	
 	public List<Account> findAll(){
 		return accountRepository.findAll();
 	}
@@ -22,8 +29,12 @@ public class AccountService {
 		return accountRepository.findAllUser();
 	}
 	
-	public Account findOne(int id) {
-		return accountRepository.findOne(id);
+	public List<Account> findAllUserAvailable() {
+		return accountRepository.findAllUserAvailable();
+	}
+	
+	public List<Account> findAllUserBlocked() {
+		return accountRepository.findAllUserBlocked();
 	}
 	
 	public Account findOneByPhoneAndPassword(String phone, String password) {
@@ -39,6 +50,20 @@ public class AccountService {
 	
 	public boolean checkPassById(int id, String pass) {
 		return accountRepository.getPasswordById(id, pass) == null ? false : true;
+	}
+	
+	public String FixString(String s) {
+		  String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+		  Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		  return pattern.matcher(temp).replaceAll("").replace("đ", "d");
+	}
+	
+	public List<Account> SearchForName(String content){
+		List<Account> la = new ArrayList<Account>();
+		for(Account acc: accountRepository.findAll())
+			if( FixString(acc.getName().toLowerCase() ).contains( FixString(content.toLowerCase()) ))
+				la.add(acc);
+		return la;
 	}
 	
 	public void save(Account account) {

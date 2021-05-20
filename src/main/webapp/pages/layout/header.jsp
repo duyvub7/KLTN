@@ -37,5 +37,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/assets/css/plugins/perfect-scrollbar.css">
 <!-- light gallery css -->
 <link rel="stylesheet" href="${contextPath}/resources/assets/css/plugins/lightgallery.min.css">
+<!-- Select 2 css -->
+<link rel="stylesheet" href="${contextPath}/resources/assets\bower_components\css\select2.min.css">
 <!-- Main Style CSS -->
 <link rel="stylesheet" href="${contextPath}/resources/assets/css/style.css">

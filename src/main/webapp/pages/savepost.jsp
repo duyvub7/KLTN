@@ -24,7 +24,7 @@
                         <div class="col-lg-3 col-md-3">
                             <div class="profile-picture-box">
                                 <figure class="profile-picture">
-                                    <a href="profile.html">
+                                    <a href="my-profile">
                                         <img src="${current_account.avatar }" alt="profile picture">
                                     </a>
                                 </figure>
@@ -73,8 +73,7 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active show" id="one">
                                         <c:forEach var="post" items="${listPost0 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -89,9 +88,11 @@
 					
 					                                <div class="posted-author">
 					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    </span>
+					                                    <c:if test="${post.post_type != 1 }">
+					                                    	<p>
 						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
 						                                        <i class="fa fa-money mr-1"></i>
 							                                        <span class="text-info">
@@ -107,9 +108,9 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="profile-unsave-post" data-id="${post.post_id }">Bỏ lưu bài viết</button></li>
+					                                            <li><button class="profile-report-post" data-id="${post.post_id }">Báo cáo bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
@@ -139,9 +140,22 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="fa fa-heart"></i>
-					                                        <span class="lh-16">${post.getLike().size() }</span>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
 					                                        <li class="mr-3">
@@ -152,19 +166,22 @@
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success display-0" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
 					                                <div class="row mb-2">
 					                                    <a href="#" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
 					                                            <img src="${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
 					                                </div>
-					                                <div id="com-area-1">
+					                                <div class="com-area-1">
 					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
 					                                		<div class="unorder-list mb-2 border-bot-light">
 						                                        <div class="profile-thumb">
@@ -177,8 +194,8 @@
 						                                        <div class="unorder-list-info with-500">
 						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
 						                                            <div>
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -186,7 +203,7 @@
 						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="display-0" id="com-area-2">
+					                                <div class="display-0 com-area-2">
 					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
 					                                		<div class="unorder-list mb-2 border-bot-light">
 						                                        <div class="profile-thumb">
@@ -207,64 +224,14 @@
 						                                        </div>
 						                                    </div>
 					                                	</c:forEach>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>>
                                     </div>
                                     <div class="tab-pane fade" id="two">
                                         <c:forEach var="post" items="${listPost1 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -279,7 +246,9 @@
 					
 					                                <div class="posted-author">
 					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    </span>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -288,16 +257,24 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="profile-unsave-post" data-id="${post.post_id }">Bỏ lưu bài viết</button></li>
+					                                            <li><button class="profile-report-post" data-id="${post.post_id }">Báo cáo bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -312,117 +289,98 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
 					                                <div class="row mb-2">
 					                                    <a href="#" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
 					                                            <img src="${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
 					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light">
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+																	</p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
                                     </div>
                                     <div class="tab-pane fade" id="three">
                                         <c:forEach var="post" items="${listPost2 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -437,16 +395,9 @@
 					
 					                                <div class="posted-author">
 					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
-						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
-						                                        <i class="fa fa-money mr-1"></i>
-							                                        <span class="text-info">
-							                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
-							                                        </span>
-						                                    </p>
-					                                    </c:if>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    </span>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -455,16 +406,24 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="profile-unsave-post" data-id="${post.post_id }">Bỏ lưu bài viết</button></li>
+					                                            <li><button class="profile-report-post" data-id="${post.post_id }">Báo cáo bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -479,117 +438,98 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
 					                                <div class="row mb-2">
 					                                    <a href="#" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
 					                                            <img src="${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
 					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light">
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+																	</p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
                                     </div>
                                     <div class="tab-pane fade" id="four">
                                         <c:forEach var="post" items="${listPost3 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -604,16 +544,9 @@
 					
 					                                <div class="posted-author">
 					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
-						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
-						                                        <i class="fa fa-money mr-1"></i>
-							                                        <span class="text-info">
-							                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
-							                                        </span>
-						                                    </p>
-					                                    </c:if>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    </span>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -622,16 +555,24 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="profile-unsave-post" data-id="${post.post_id }">Bỏ lưu bài viết</button></li>
+					                                            <li><button class="profile-report-post" data-id="${post.post_id }">Báo cáo bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -646,117 +587,98 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
 					                                <div class="row mb-2">
 					                                    <a href="#" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
 					                                            <img src="${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
 					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light">
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+																	</p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
                                     </div>
                                     <div class="tab-pane fade" id="five">
                                         <c:forEach var="post" items="${listPost4 }">
-											<!-- post status start -->
-					                        <div class="card">
+											<div class="card">
 					                            <!-- post title start -->
 					                            <div class="post-title d-flex align-items-center">
 					                                <!-- profile picture end -->
@@ -771,16 +693,9 @@
 					
 					                                <div class="posted-author">
 					                                    <h6 class="author"><a href="profile.html">${post.getAccount().getName() }</a></h6>
-					                                    <span class="post-time">${fn:substring(post.post_date, 0, 16) }</span>
-					                                    <c:if test="${post.post_type != 1}">
-					                                    	<p class="mt-1">
-						                                        <i class="icofont icofont-location-pin"></i><span class="text-muted mr-3">${post.getProvince().getProvince_name() }</span>
-						                                        <i class="fa fa-money mr-1"></i>
-							                                        <span class="text-info">
-							                                        	<fmt:formatNumber type="number" maxFractionDigits="3" value="${post.price }"/> vnđ
-							                                        </span>
-						                                    </p>
-					                                    </c:if>
+					                                    <span class="post-time">
+					                                    	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${post.post_date }"/>
+					                                    </span>
 					                                </div>
 					
 					                                <div class="post-settings-bar">
@@ -789,16 +704,24 @@
 					                                    <span></span>
 					                                    <div class="post-settings arrow-shape">
 					                                        <ul>
-					                                            <li><button>Sửa bài viết</button></li>
-					                                            <li><button>Xóa bài viết</button></li>
-					                                        </ul>
+					                                        	<li><button class="profile-unsave-post" data-id="${post.post_id }">Bỏ lưu bài viết</button></li>
+					                                            <li><button class="profile-report-post" data-id="${post.post_id }">Báo cáo bài viết</button></li>
+						                                    </ul>
 					                                    </div>
 					                                </div>
 					                            </div>
 					                            <!-- post title start -->
 					                            <div class="post-content">
 					                            	<c:if test="${post.post_content.length() > 300 }">
-					                            		<p class="post-desc">${fn:substring(post.post_content, 0, 300) }...<a href="#">xem thêm</a></p>
+					                            		<p class="post-desc">
+					                            			${fn:substring(post.post_content, 0, 300) }
+					                            			<span class="text-blue post-more">...xem thêm</span>
+					                            			<span class="more-content display-0">
+					                            				${fn:substring(post.post_content, 301, post.post_content.length()) }
+					                            				<span class="text-blue post-short">thu gọn</span>
+					                            			</span>
+					                            			
+					                            		</p>
 					                            	</c:if>
 					                                <c:if test="${post.post_content.length() <= 300 }">
 					                            		<p class="post-desc">${post.post_content}</p>
@@ -813,111 +736,93 @@
 						                                </div>
 						                            </c:if>
 					                                <div class="post-meta">
-					                                    <button class="post-meta-like">
-					                                        <i class="bi bi-heart-beat"></i>
-					                                        <span>${post.getLike().size() }</span>
-					                                        <strong>201</strong>
+					                                    <button class="post-meta-like" data-postId="${post.post_id }"
+					                                    	 data-icon="icon-of${post.post_id }" data-like="like-of${post.post_id }">
+				                                        	<c:forEach var="id" items="${listLiked }">
+				                                        		<c:if test="${id == post.post_id }">
+				                                        			<c:set var = "check" value = "yes"/>
+				                                        		</c:if>
+				                                        	</c:forEach>
+				                                        	<c:choose>
+					                                        	<c:when test="${ check == 'yes' }">
+					                                        		<i class="fa fa-heart icon-of${post.post_id }" style="color: #41b3d8"></i>
+					                                        	</c:when>
+					                                        	<c:otherwise>
+					                                        		<i class="fa fa-heart icon-of${post.post_id }"></i>
+					                                        	</c:otherwise>
+					                                        </c:choose>
+					                                        <span class="lh-16 like-of${post.post_id }">${post.getLike().size() }</span>
 					                                    </button>
 					                                    <ul class="comment-share-meta">
-					                                        <li>
+					                                        <li class="mr-3">
 					                                            <button class="post-comment">
 					                                                <i class="bi bi-chat-bubble"></i>
-					                                                <span>${post.getComment().size() }</span>
-					                                            </button>
-					                                        </li>
-					                                        <li>
-					                                            <button class="post-share">
-					                                                <i class="bi bi-share"></i>
-					                                                <span>02</span>
+					                                                <span class="lh-16">${post.getComment().size() }</span>
 					                                            </button>
 					                                        </li>
 					                                    </ul>
 					                                </div>
-					                                <div class="mt-1 ml-2">
-					                                    <p class="text-success" id="bl-01">Xem thêm bình luận</p>
-					                                    <p class="text-success hide-class" id="bl-02">Ẩn bớt bình luận</p>
-					                                </div>
+					                                <hr class="my-2">
+					                                <c:if test="${post.getComment().size() > 2 }">
+					                                	<div class="ml-2 mb-2 option-com">
+						                                    <p class="text-success more-com">Xem thêm bình luận</p>
+						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
+						                                </div>
+					                                </c:if>
 					                                <div class="row mb-2">
 					                                    <a href="#" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
 					                                            <img src="${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" />
+					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
 					                                </div>
-					                                <div id="com-area-1">
-					                                	<c:forEach var="comment" items="${post.getComment() }">
+					                                <div class="com-area-1">
+					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
 					                                		<div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
-					                                            <p class="text-muted">${fn:substring(comment.time, 0, 16) }</p>
-					                                            <div>
-					                                                <p>${comment.comment_content }</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
 					                                	</c:forEach>
 					                                </div>
-					                                <div class="hide-class" id="com-area-2">
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
-					                                    <div class="unorder-list mb-2 border-bot-light">
-					                                        <div class="profile-thumb">
-					                                            <a href="#">
-					                                                <figure class="profile-thumb-small">
-					                                                    <img src="assets/images/profile/avatar-6.jpg" alt="profile picture">
-					                                                </figure>
-					                                            </a>
-					                                        </div>
-					                                        <div class="unorder-list-info with-500">
-					                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">Jackson</a></h3>
-					                                            <p class="text-muted">20 min ago</p>
-					                                            <div>
-					                                                <p>Bài viết rất hay</p>
-					                                            </div>
-					                                        </div>
-					                                    </div>
+					                                <div class="display-0 com-area-2">
+					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
+					                                		<div class="unorder-list mb-2 border-bot-light">
+						                                        <div class="profile-thumb">
+						                                            <a href="#">
+						                                                <figure class="profile-thumb-small">
+						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
+						                                                </figure>
+						                                            </a>
+						                                        </div>
+						                                        <div class="unorder-list-info with-500">
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <p class="text-muted">
+																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+																	</p>
+						                                            <div>
+						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+					                                	</c:forEach>
 					                                </div>
 					                            </div>
 					                        </div>
-					                        <!-- post status end -->
 										</c:forEach>
                                     </div>
                                 </div>

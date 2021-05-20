@@ -13,6 +13,15 @@ import Vu.model.Friend;
 public interface FriendRepository extends JpaRepository<Friend, Integer> {
 	
 	@Query(value="select * from Friend "
+			+ "where ( (from_account_id = :fromId and to_account_id = :toId)"
+			+ "		    or (from_account_id = :toId and to_account_id = :fromId) )"
+			+ " and friend_status like 1", nativeQuery = true)
+	List<Friend> findFriend( @Param("fromId") int fromId, @Param("toId") int toId );
+	
+	@Query(value="select * from Friend where (from_account_id = :id or to_account_id = :id) and friend_status like 1", nativeQuery = true)
+	List<Friend> findListFriend( @Param("id") int id );
+	
+	@Query(value="select * from Friend "
 			+ "where ( from_account_id like :id or to_account_id like :id ) and friend_status like 1", nativeQuery = true)
 	List<Friend> findAllFriend( @Param("id") int id);
 	

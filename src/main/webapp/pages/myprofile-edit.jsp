@@ -63,44 +63,68 @@
 	                                <div class="row">
 	                                    <div class="col-12 row">
 	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Giới thiệu</p>
-	                                        <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Thông tin ngắn gọn về bản thân" value="thông tin j đó">
+	                                        <input type="text" name="introduction" class="single-field col-md-9 col-lg-10 col-12 text-muted" 
+	                                        	placeholder="Thông tin ngắn gọn về bản thân" value="${current_account.introduction }">
 	                                    </div>
 	                                    <div class="col-12 row">
 	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Họ tên</p>
-	                                        <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Họ tên" value="Nguyễn Văn Tiến">
+	                                        <input type="text" name="name" class="single-field col-md-9 col-lg-10 col-12 text-muted" 
+	                                        	placeholder="Họ tên" value="${current_account.name }">
 	                                    </div>
 	                                    <div class="col-12 row">
 	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Giới tính</p>
-	                                        <select class="form-control col-md-9 col-lg-10 col-12">
-	                                            <option class="f-18">1</option>
-	                                            <option class="f-18">2</option>
-	                                            <option class="f-18" selected>3</option>
-	                                            <option class="f-18">4</option>
-	                                            <option class="f-18">5</option>
+	                                        <select name="gender" class="form-control col-md-9 col-lg-10 col-12">
+	                                        	<c:choose>
+	                                        		<c:when test="${current_account.gender == 1 }">
+	                                        			<option class="f-18" value="1" selected>Nam</option>
+	                                        			<option class="f-18" value="2">Nữ</option>
+	                                        			<option class="f-18" value="3">Ẩn</option>
+	                                        		</c:when>
+	                                        		<c:when test="${current_account.gender == 2 }">
+	                                        			<option class="f-18" value="1">Nam</option>
+	                                        			<option class="f-18" value="2" selected>Nữ</option>
+	                                        			<option class="f-18" value="3">Ẩn</option>
+	                                        		</c:when>
+	                                        		<c:otherwise>
+	                                        			<option class="f-18" value="1">Nam</option>
+	                                        			<option class="f-18" value="2">Nữ</option>
+	                                        			<option class="f-18" value="3" selected>Ẩn</option>
+	                                        		</c:otherwise>
+	                                        	</c:choose>
 	                                        </select>
 	                                    </div>
 	                                    <div class="col-12 row">
 	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Ngày sinh</p>
-	                                        <input class="form-control single-field col-md-9 col-lg-10 col-12 text-muted f-16" type="date" value="2011-08-19" id="example-date-input">
+	                                        <input class="form-control single-field col-md-9 col-lg-10 col-12 text-muted f-16" name="birthday" type="date" 
+	                                        	value="${current_account.birthday }" id="date-input">
 	                                        
 	                                    </div>
 	                                    <div class="col-12 row">
 	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Số điện thoại</p>
-	                                        <input type="tel" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Số điện thoại" value="sdt l,an">
+	                                        <input type="tel" name="phone" class="single-field col-md-9 col-lg-10 col-12 text-muted" 
+	                                        	placeholder="Số điện thoại" value="${current_account.phone }">
 	                                    </div>
 	                                    <div class="col-12 row">
 	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Tỉnh thành</p>
-	                                        <select class="form-control col-md-9 col-lg-10 col-12">
-	                                            <option>1</option>
-	                                            <option>2</option>
-	                                            <option>3</option>
-	                                            <option>4</option>
-	                                            <option>5</option>
-	                                        </select>
+	                                        <div class="select-small">
+	                                        	<select name="province" class="js-example-basic-single col-md-9 col-lg-10 col-12 with-300">
+		                                        	<c:forEach var="province" items="${listProvince }">
+		                                        		<c:choose>
+							                      			<c:when test="${current_account.province_id == province.province_id }">
+							                      				<option value="${province.province_id }" selected>${province.province_name }</option>
+							                      			</c:when>
+							                      			<c:otherwise>
+							                      				<option value="${province.province_id }">${province.province_name }</option>
+							                      			</c:otherwise>
+							                      		</c:choose>
+		                                        	</c:forEach>
+		                                        </select>
+	                                        </div>
 	                                    </div>
-	                                    <div class="col-12 row">
+	                                    <div class="col-12 row mt-4">
 	                                        <p class="col-md-3 col-lg-2 col-12 pt-2 pl-1">Địa chỉ</p>
-	                                        <input type="text" class="single-field col-md-9 col-lg-10 col-12 text-muted" placeholder="Địa chỉ" value="địa chỉ 1">
+	                                        <input type="text" name="address" class="single-field col-md-9 col-lg-10 col-12 text-muted" 
+	                                        	placeholder="Địa chỉ" value="${current_account.address }">
 	                                    </div>
 	                                </div>
 	                            </div>

@@ -17,48 +17,48 @@
 	                           		<c:when test="${listPost != null && listPost.size() > 0}">
 	                           			<c:choose>
 			                           		<c:when test="${listPost.get(0).getPost_type() == 1}">
-			                           			<li class="mr-4 ml-2 active"><a href="post">Bài viết</a></li>
+			                           			<li class="mr-4 ml-2 active"><a href="${contextPath}/post">Bài viết</a></li>
 			                           		</c:when>
 			                           		<c:otherwise>
-			                           			<li class="mr-4 ml-2"><a href="post">Bài viết</a></li>
+			                           			<li class="mr-4 ml-2"><a href="${contextPath}/post">Bài viết</a></li>
 					                        </c:otherwise>
 			                           </c:choose>
 			                           <c:choose>
 			                           		<c:when test="${listPost.get(0).getPost_type() == 2}">
-			                           			<li class="mr-4 active"><a href="emptyroom">Phòng trọ</a></li>
+			                           			<li class="mr-4 active"><a href="${contextPath}/emptyroom">Phòng trọ</a></li>
 			                           		</c:when>
 			                           		<c:otherwise>
-			                           			<li class="mr-4"><a href="emptyroom">Phòng trọ</a></li>
+			                           			<li class="mr-4"><a href="${contextPath}/emptyroom">Phòng trọ</a></li>
 					                        </c:otherwise>
 			                           </c:choose>
 			                           <c:choose>
 			                           		<c:when test="${listPost.get(0).getPost_type() == 3}">
-			                           			<li class="mr-4 active"><a href="shareroom">Ở ghép</a></li>
+			                           			<li class="mr-4 active"><a href="${contextPath}/shareroom">Ở ghép</a></li>
 			                           		</c:when>
 			                           		<c:otherwise>
-			                           			<li class="mr-4"><a href="shareroom">Ở ghép</a></li>
+			                           			<li class="mr-4"><a href="${contextPath}/shareroom">Ở ghép</a></li>
 					                        </c:otherwise>
 			                           </c:choose>
 			                           <c:choose>
 			                           		<c:when test="${listPost.get(0).getPost_type() == 4}">
-			                           			<li class="mr-4 active"><a href="utensil">Đồ dùng</a></li>
+			                           			<li class="mr-4 active"><a href="${contextPath}/utensil">Đồ dùng</a></li>
 			                           		</c:when>
 			                           		<c:otherwise>
-			                           			<li class="mr-4"><a href="utensil">Đồ dùng</a></li>
+			                           			<li class="mr-4"><a href="${contextPath}/utensil">Đồ dùng</a></li>
 					                        </c:otherwise>
 			                           </c:choose>
 	                           		</c:when>
 	                           		<c:otherwise>
-	                           			<li class="mr-4 ml-2"><a href="post">Bài viết</a></li>
-		                                <li class="mr-4"><a href="emptyroom">Phòng trọ</a></li>
-		                                <li class="mr-4 "><a href="shareroom">Ở ghép</a></li>
-		                                <li class="mr-4 "><a href="utensil">Đồ dùng</a></li>
+	                           			<li class="mr-4 ml-2"><a href="${contextPath}/post">Bài viết</a></li>
+		                                <li class="mr-4"><a href="${contextPath}/emptyroom">Phòng trọ</a></li>
+		                                <li class="mr-4 "><a href="${contextPath}/shareroom">Ở ghép</a></li>
+		                                <li class="mr-4 "><a href="${contextPath}/utensil">Đồ dùng</a></li>
 			                        </c:otherwise>
 	                           </c:choose>
                                <li class="notification-trigger mr-4 float-right">
                                    <a class="msg-trigger-btn" href="#b">
                                        <button class="notification"><i class="flaticon-notification f-22"></i>
-                                           <span>03</span>
+                                           <span>${listNotification.size() }</span>
                                        </button>
                                    </a>
                                    <div class="message-dropdown" id="b">
@@ -75,7 +75,7 @@
 		                                        		<li class="msg-list-item d-flex justify-content-between">
 			                                                 <div class="profile-thumb">
 			                                                     <figure class="profile-thumb-middle">
-			                                                         <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
+			                                                         <img src="${contextPath}/${notification.getAccount().getAvatar() }" alt="profile picture">
 			                                                     </figure>
 			                                                 </div>
 			                                                 <div class="msg-content notification-content">
@@ -93,7 +93,7 @@
 		                                        		<li class="msg-list-item d-flex justify-content-between">
 			                                                 <div class="profile-thumb">
 			                                                     <figure class="profile-thumb-middle">
-			                                                         <img src="${notification.getAccount().getAvatar() }" alt="profile picture">
+			                                                         <img src="${contextPath}/${notification.getAccount().getAvatar() }" alt="profile picture">
 			                                                     </figure>
 			                                                 </div>
 			                                                 <div class="msg-content notification-content">
@@ -117,7 +117,7 @@
                                <li class="msg-trigger mr-5 float-right">
                                    <a class="msg-trigger-btn" href="#a">
                                        <button class="chat-trigger notification"><i class="flaticon-chats f-22"></i>
-                                           <span>04</span>
+                                           <span>${listChat.size() }</span>
                                        </button>
                                    </a>
                                    <div class="message-dropdown" id="a">
@@ -135,7 +135,7 @@
 		                                       				<li class="msg-list-item d-flex justify-content-between">
 			                                                  <div class="profile-thumb">
 			                                                      <figure class="profile-thumb-middle">
-			                                                          <img src="${message.getFrom_account().getAvatar() }" alt="profile picture">
+			                                                          <img src="${contextPath}/${message.getFrom_account().getAvatar() }" alt="profile picture">
 			                                                      </figure>
 			                                                  </div>
 			                                                  <div class="msg-content">
@@ -152,7 +152,7 @@
 		                                       				<li class="msg-list-item d-flex justify-content-between">
 			                                                  <div class="profile-thumb">
 			                                                      <figure class="profile-thumb-middle">
-			                                                          <img src="${message.getTo_account().getAvatar() }" alt="profile picture">
+			                                                          <img src="${contextPath}/${message.getTo_account().getAvatar() }" alt="profile picture">
 			                                                      </figure>
 			                                                  </div>
 			                                                  <div class="msg-content">
@@ -172,7 +172,7 @@
 		                                       				<li class="msg-list-item d-flex justify-content-between">
 			                                                  <div class="profile-thumb">
 			                                                      <figure class="profile-thumb-middle">
-			                                                          <img src="${message.getFrom_account().getAvatar() }" alt="profile picture">
+			                                                          <img src="${contextPath}/${message.getFrom_account().getAvatar() }" alt="profile picture">
 			                                                      </figure>
 			                                                  </div>
 			                                                  <div class="msg-content">
@@ -189,7 +189,7 @@
 		                                       				<li class="msg-list-item d-flex justify-content-between">
 			                                                  <div class="profile-thumb">
 			                                                      <figure class="profile-thumb-middle">
-			                                                          <img src="${message.getTo_account().getAvatar() }" alt="profile picture">
+			                                                          <img src="${contextPath}/${message.getTo_account().getAvatar() }" alt="profile picture">
 			                                                      </figure>
 			                                                  </div>
 			                                                  <div class="msg-content">
@@ -232,7 +232,7 @@
 			                                                 <div class="frnd-request-member">
 			                                                     <figure class="request-thumb">
 			                                                         <a href="profile.html">
-			                                                             <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
+			                                                             <img src="${contextPath}/${request.getFrom_account().getAvatar() }" alt="proflie author">
 			                                                         </a>
 			                                                     </figure>
 			                                                     <div class="frnd-content">
@@ -249,19 +249,19 @@
                                        			</c:when>
                                        			<c:otherwise>
                                        				<c:forEach var="request" items="${listRequest }">
-		                                            	<li class="msg-list-item d-flex justify-content-between">
-			                                                 <div class="frnd-request-member">
+		                                            	<li class="msg-list-item d-flex justify-content-between option-request0">
+			                                                 <div class="frnd-request-member option-request1">
 			                                                     <figure class="request-thumb">
 			                                                         <a href="profile.html">
-			                                                             <img src="${request.getFrom_account().getAvatar() }" alt="proflie author">
+			                                                             <img src="${contextPath}/${request.getFrom_account().getAvatar() }" alt="proflie author">
 			                                                         </a>
 			                                                     </figure>
-			                                                     <div class="frnd-content">
+			                                                     <div class="frnd-content option-request2">
 			                                                         <h6 class="author"><a href="profile.html">${request.getFrom_account().getName() }</a></h6>
 			                                                         <p class="author-subtitle">${fn:substring(request.time, 0, 16) }</p>
-			                                                         <div class="request-btn-inner">
-			                                                             <button class="frnd-btn">Chấp nhận</button>
-			                                                             <button class="frnd-btn delete">Xóa</button>
+			                                                         <div class="request-btn-inner option-request3">
+			                                                             <button class="frnd-btn accept-request" data-id="${request.friend_id }">Chấp nhận</button>
+			                                                             <button class="frnd-btn delete deny-request" data-id="${request.friend_id }">Xóa</button>
 			                                                         </div>
 			                                                     </div>
 			                                                 </div>
@@ -286,9 +286,9 @@
                    <div class="header-top-right d-flex align-items-center justify-content-end">
                        <!-- header top search start -->
                        <div class="header-top-search">
-                           <form class="top-search-box">
-                               <input type="text" placeholder="Tìm kiếm" class="top-search-field">
-                               <button class="top-search-btn"><i class="flaticon-search"></i></button>
+                           <form action="search" method="post" class="top-search-box" id="nav-search-form">
+                               <input type="text" name="text" placeholder="Tìm kiếm" class="top-search-field" id="nav-search-text" autocomplete="off">
+                               <button class="top-search-btn" id="nav-search-btn"><i class="flaticon-search"></i></button>
                            </form>
                        </div>
                        <!-- header top search end -->
@@ -297,7 +297,7 @@
                        <div class="profile-setting-box">
                            <div class="profile-thumb-small">
                                <a href="javascript:void(0)" class="profile-triger">
-                                       <img src="${current_account.avatar }" alt="profile picture">
+                                       <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
                                </a>
                                <div class="profile-dropdown">
                                    <div class="profile-head">
@@ -306,8 +306,8 @@
                                    </div>
                                    <div class="profile-body">
                                        <ul>
-                                           <li><a href="my-profile"><i class="flaticon-user"></i>Hồ sơ cá nhân</a></li>
-                                           <li><a href="logout"><i class="feather icon-log-out"></i>Đăng xuất</a></li>
+                                           <li><a href="${contextPath}/my-profile"><i class="flaticon-user"></i>Hồ sơ cá nhân</a></li>
+                                           <li><a href="${contextPath}/logout"><i class="feather icon-log-out"></i>Đăng xuất</a></li>
                                        </ul>
                                    </div>
                                </div>
@@ -326,132 +326,24 @@
         <div class="mobile-header position-relative ">
             <div class="mobile-logo">
                 <a href="index.html">
-                    <img src="resources/contents/images/icon-home.png" alt="logo">
+                    <img src="${contextPath}/resources/contents/images/icon-home.png" alt="logo">
                 </a>
             </div>
             <div class="mobile-menu w-100">
                 <ul>
                     <li>
                         <button class="notification request-trigger"><i class="flaticon-users"></i>
-                            <span>03</span>
+                            <span>${listChat.size() }</span>
                         </button>
-                        <ul class="frnd-request-list">
-                            <li>
-                                <div class="frnd-request-member">
-                                    <figure class="request-thumb">
-                                        <a href="profile.html">
-                                            <img src="assets/images/profile/avatar-1.jpg" alt="proflie author">
-                                        </a>
-                                    </figure>
-                                    <div class="frnd-content">
-                                        <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                        <p class="author-subtitle">Works at HasTech</p>
-                                        <div class="request-btn-inner">
-                                            <button class="frnd-btn">confirm</button>
-                                            <button class="frnd-btn delete">delete</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="frnd-request-member">
-                                    <figure class="request-thumb">
-                                        <a href="profile.html">
-                                            <img src="assets/images/profile/profile-midle-2.jpg" alt="proflie author">
-                                        </a>
-                                    </figure>
-                                    <div class="frnd-content">
-                                        <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                        <p class="author-subtitle">Works at HasTech</p>
-                                        <div class="request-btn-inner">
-                                            <button class="frnd-btn">confirm</button>
-                                            <button class="frnd-btn delete">delete</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="frnd-request-member">
-                                    <figure class="request-thumb">
-                                        <a href="profile.html">
-                                            <img src="assets/images/profile/profile-midle-3.jpg" alt="proflie author">
-                                        </a>
-                                    </figure>
-                                    <div class="frnd-content">
-                                        <h6 class="author"><a href="profile.html">merry watson</a></h6>
-                                        <p class="author-subtitle">Works at HasTech</p>
-                                        <div class="request-btn-inner">
-                                            <button class="frnd-btn">confirm</button>
-                                            <button class="frnd-btn delete">delete</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
                     </li>
                     <li>
                         <button class="chat-trigger notification"><i class="flaticon-chats"></i>
-                            <span>04</span>
+                            <span>${listRequest.size() }</span>
                         </button>
-                        <div class="mobile-chat-box">
-                            <div class="live-chat-title">
-                                <!-- profile picture end -->
-                               <div class="profile-thumb">
-                                   <a href="profile.html">
-                                       <figure class="profile-thumb-small profile-active">
-                                           <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture">
-                                       </figure>
-                                   </a>
-                               </div>
-                               <!-- profile picture end -->
-                               <div class="posted-author">
-                                   <h6 class="author"><a href="profile.html">Robart Marloyan</a></h6>
-                                   <span class="active-pro">active now</span>
-                               </div>
-                               <div class="live-chat-settings ml-auto">
-                                   <button class="chat-settings"><img src="assets/images/icons/settings.png" alt=""></button>
-                                   <button class="close-btn"><img src="assets/images/icons/close.png" alt=""></button>
-                               </div>
-                           </div>
-                           <div class="message-list-inner">
-                               <ul class="message-list custom-scroll">
-                                   <li class="text-friends">
-                                       <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</p>
-                                       <div class="message-time">10 minute ago</div>
-                                   </li>
-                                   <li class="text-author">
-                                       <p>Many desktop publishing packages and web page editors</p>
-                                       <div class="message-time">5 minute ago</div>
-                                   </li>
-                                   <li class="text-friends">
-                                       <p>packages and web page editors </p>
-                                       <div class="message-time">2 minute ago</div>
-                                   </li>
-                                   <li class="text-friends">
-                                       <p>Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text</p>
-                                       <div class="message-time">10 minute ago</div>
-                                   </li>
-                                   <li class="text-author">
-                                       <p>Many desktop publishing packages and web page editors</p>
-                                       <div class="message-time">5 minute ago</div>
-                                   </li>
-                                   <li class="text-friends">
-                                       <p>packages and web page editors </p>
-                                       <div class="message-time">2 minute ago</div>
-                                   </li>
-                               </ul>
-                           </div>
-                           <div class="chat-text-field mob-text-box">
-                               <textarea class="live-chat-field custom-scroll" placeholder="Text Message"></textarea>
-                               <button class="chat-message-send" type="submit" value="submit">
-                                   <img src="assets/images/icons/plane.png" alt="">
-                               </button>
-                           </div>
-                       </div>
                    </li>
                    <li>
                        <button class="notification"><i class="flaticon-notification"></i>
-                           <span>03</span>
+                           <span>${listNotification.size() }</span>
                        </button>
                    </li>
                    <li>
@@ -473,7 +365,7 @@
                <div class="profile-thumb profile-setting-box">
                    <a href="javascript:void(0)" class="profile-triger">
                        <figure class="profile-thumb-middle">
-                           <img src="${current_account.avatar }" alt="profile picture">
+                           <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
                        </figure>
                    </a>
                    <div class="profile-dropdown text-left">
@@ -483,8 +375,8 @@
                        </div>
                        <div class="profile-body">
                            <ul>
-                               <li><a href="profile.html"><i class="flaticon-user"></i>Hồ sơ</a></li>
-                               <li><a href="logout"><i class="flaticon-unlock"></i>Đăng xuất</a></li>
+                               <li><a href="${contextPath}/my-profile"><i class="flaticon-user"></i>Hồ sơ</a></li>
+                               <li><a href="${contextPath}/logout"><i class="flaticon-unlock"></i>Đăng xuất</a></li>
                            </ul>
                        </div>
                    </div>

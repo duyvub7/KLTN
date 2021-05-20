@@ -15,16 +15,14 @@
     
     <main>
         <div class="main-wrapper pb-2">
-            <div class="profile-banner-large bg-img" data-bg="${current_account.wall_image }"></div>
+            <div class="profile-banner-large bg-img changeWall-btn" data-bg="${current_account.wall_image }"></div>
             <div class="profile-menu-area bg-white">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-3">
                             <div class="profile-picture-box">
                                 <figure class="profile-picture">
-                                    <a href="profile.html">
-                                        <img src="${current_account.avatar }" alt="profile picture">
-                                    </a>
+                                    <img class="changeAvatar-btn" src="${current_account.avatar }" alt="profile picture">
                                 </figure>
                             </div>
                         </div>
@@ -60,8 +58,8 @@
                                     <span></span>
                                     <div class="post-settings arrow-shape">
                                         <ul>
-                                            <li><button data-toggle="modal" data-target="#textbox">Đổi ảnh đại diện</button></li>
-                                            <li><button>Đổi ảnh bìa</button></li>
+                                            <li><button class="changeAvatar-btn">Đổi ảnh đại diện</button></li>
+                                            <li><button class="changeWall-btn">Đổi ảnh bìa</button></li>
                                             <li><a href="edit-profile"><button>Sửa thông tin cá nhân</button></a></li>
                                         </ul>
                                     </div>
@@ -149,46 +147,66 @@
         </div>
     </main>
 
-    <div class="modal fade" id="textbox" aria-labelledby="textbox">
+    <div class="modal fade" id="modal1" aria-labelledby="modal1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Chọn ảnh đại diện mới</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="">
-                    <div class="container">
-                        <div class="panel my-2">
-                            <div class="button_outer">
-                                <div class="btn_upload">
-                                    <input type="file" id="upload_file" name="">
-                                    Chọn ảnh
-                                </div>
-                                <div class="processing_bar"></div>
-                                <div class="success_box"></div>
-                            </div>
-                        </div>
-                        <div class="error_msg"></div>
-                        <div class="uploaded_file_view my-2" id="uploaded_view">
-                            <span class="file_remove">X</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="post-share-btn" data-dismiss="modal">Hủy bỏ</button>
-                    <input type="submit" id="change-btn" class="btn post-share-btn" value="Đổi avatar"/>
-                </div>
+            	<form id="form-change" action="change-avatar" method="post" enctype="multipart/form-data">
+            		<div class="modal-header">
+	                    <h5 class="modal-title" id="title1">Chọn ảnh đại diện mới</h5>
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                </div>
+	                <div class="">
+	                    <div class="container">
+	                        <div class="panel my-2">
+	                            <div class="button_outer">
+	                                <div class="btn_upload">
+	                                    <input type="file" id="upload_file" name="file">
+	                                    Chọn ảnh
+	                                </div>
+	                                <div class="processing_bar"></div>
+	                                <div class="success_box"></div>
+	                            </div>
+	                        </div>
+	                        <div class="error_msg"></div>
+	                        <div class="uploaded_file_view my-2" id="uploaded_view">
+	                            <span class="file_remove">X</span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="post-share-btn" data-dismiss="modal">Hủy bỏ</button>
+	                    <input type="submit" id="change-btn" class="btn post-share-btn" value="Đổi avatar"/>
+	                </div>
+            	</form>
             </div>
         </div>
     </div>
-	
+    
     <div class="scroll-top not-visible">
         <i class="bi bi-finger-index"></i>
     </div>
 	
 	<jsp:include page="/pages/layout/footer.jsp" />
+	
+	<script>
+		$(document).ready(function () {
+			$('.changeAvatar-btn').click( function () {
+			  $('#modal1').modal()
+			  $('#title1').html('Chọn ảnh đại diện mới')
+			  $('#change-btn').attr('value', 'Đổi avatar')
+			  $('#form-change').attr('action', 'change-avatar')
+			});
+			$('.changeWall-btn').click( function () {
+			  $('#modal1').modal()
+			  $('#title1').html('Chọn ảnh bìa mới')
+			  $('#change-btn').attr('value', 'Đổi ảnh bìa')
+			  $('#form-change').attr('action', 'change-wall')
+			});
+		});
+	</script>
+	
 	
 </body>
 </html>

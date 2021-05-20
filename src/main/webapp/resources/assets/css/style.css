@@ -3536,6 +3536,9 @@ textarea:focus {
 .with-100 {
   width: 100px !important;
 }
+.with-130 {
+  width: 130px !important;
+}
 .with-150 {
   width: 150px !important;
 }
@@ -3553,6 +3556,25 @@ textarea:focus {
 }
 .with-500 {
   width: 500px !important;
+}
+
+.height-30 {
+	height: 30px !important;
+}
+.height-50 {
+	height: 50px !important;
+}
+.height-70 {
+	height: 70px !important;
+}
+.height-100 {
+	height: 100px !important;
+}
+.height-200 {
+	height: 200px !important;
+}
+.height-300 {
+	height: 300px !important;
 }
 
 .a-black {
@@ -3767,7 +3789,7 @@ upload image
 
 .sticky-left {
 	position: sticky !important;
-    top: -240px;
+    top: -245px;
 }
 
 .sticky-right {
@@ -3863,6 +3885,14 @@ upload image
 	cursor: pointer;
 }
 
+.blue {
+	color: #41b3d8;
+}
+
+.option-com > p:hover {
+	cursor: pointer;
+}
+
 .lh-3 {
 	line-height: 3px;
 }
@@ -3881,3 +3911,50 @@ upload image
 .lh-20 {
 	line-height: 20px;
 }
+
+.image-input {
+	margin-left: -30px; 
+	margin-top: 9px; 
+	z-index: 1; 
+	cursor: pointer;
+}
+
+.mb-back-5 {
+	margin-bottom: -5px;
+}
+
+.mb-back-10 {
+	margin-bottom: -10px;
+}
+
+.mb-back-15 {
+	margin-bottom: -15px;
+}
+
+.ml-back-5 {
+	margin-left: -5px;
+}
+
+.ml-back-10 {
+	margin-left: -10px;
+}
+
+.ml-back-15 {
+	margin-left: -15px;
+}
+
+.mt-back-5 {
+	margin-top: -5px;
+}
+
+/*
+.mh-medium {
+	overflow: auto;	
+	scrollbar-width: none;
+}
+.mh-medium::-webkit-scrollbar { 
+    display: none;
+    width: 0;
+  	height: 0;
+}
+*/

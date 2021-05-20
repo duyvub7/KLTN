@@ -18,6 +18,12 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 	@Query(value="select * from Account where role like 2", nativeQuery = true)
 	List<Account> findAllUser();
 	
+	@Query(value="select * from Account where role like 2 and account_status LIKE 1", nativeQuery = true)
+	List<Account> findAllUserAvailable();
+	
+	@Query(value="select * from Account where role like 2 and account_status LIKE 0", nativeQuery = true)
+	List<Account> findAllUserBlocked();
+	
 	@Query(value="select phone from Account a where a.phone LIKE :phone", nativeQuery = true)
 	String checkExistAccountByPhone( @Param("phone") String phone );
 	
