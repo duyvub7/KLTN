@@ -178,6 +178,28 @@ public class UserController {
 		return "view-emptyroom";
 	}
 	
+	@GetMapping(value = "/emptyroom-desc")
+	public String view_emptyroom_desc_get(Model model, HttpSession session) {
+		if(!checkAvailable(session)) 
+			return "redirect:/login";
+		model.addAttribute("listPost", postService.findAllDescPrice(EMPTY_ROOM));
+		model.addAttribute("topPost", postService.findTopPost(EMPTY_ROOM));
+		setNavInfo(model, session);
+		setListPostData(model, session);
+		return "view-emptyroom";
+	}
+	
+	@GetMapping(value = "/emptyroom-asc")
+	public String view_emptyroom_asc_get(Model model, HttpSession session) {
+		if(!checkAvailable(session)) 
+			return "redirect:/login";
+		model.addAttribute("listPost", postService.findAllAscPrice(EMPTY_ROOM));
+		model.addAttribute("topPost", postService.findTopPost(EMPTY_ROOM));
+		setNavInfo(model, session);
+		setListPostData(model, session);
+		return "view-emptyroom";
+	}
+	
 	@GetMapping(value = "/emptyroom/{provinceId}")
 	public String view_emptyroom_province_get(@PathVariable("provinceId") int provinceId, Model model, HttpSession session) {
 		if(!checkAvailable(session)) 
@@ -714,6 +736,12 @@ public class UserController {
 		setNavInfo(model, session);
 		setListPostData(model, session);
 		return "friend";
+	}
+	
+	@GetMapping(value = "/delete-friend/{frId}")
+	public String delete_friend_get(@PathVariable("frId") int frId, HttpSession session) {
+		friendService.delete(frId);
+		return "redirect:/friend";
 	}
 	
 	@GetMapping(value = "/request")

@@ -29,6 +29,14 @@ public class PostService {
 		return postRepository.findAll(type);
 	}
 	
+	public List<Post> findAllDescPrice( int type) {
+		return postRepository.findAllDescPrice(type);
+	}
+	
+	public List<Post> findAllAscPrice( int type) {
+		return postRepository.findAllAscPrice(type);
+	}
+	
 	public List<Post> findAll( int type, int provinceId) {
 		return postRepository.findAll(type, provinceId);
 	}

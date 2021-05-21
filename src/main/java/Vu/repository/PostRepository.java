@@ -15,6 +15,12 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query(value="select * from Post where post_type like :type order by post_date desc", nativeQuery = true)
 	List<Post> findAll( @Param("type") int type );
 	
+	@Query(value="select * from Post where post_type like :type order by price desc", nativeQuery = true)
+	List<Post> findAllDescPrice( @Param("type") int type );
+	
+	@Query(value="select * from Post where post_type like :type order by price asc", nativeQuery = true)
+	List<Post> findAllAscPrice( @Param("type") int type );
+	
 	@Query(value="select * from Post where post_type like :type and province_id like :provinceId order by post_date desc", nativeQuery = true)
 	List<Post> findAll( @Param("type") int type, @Param("provinceId") int provinceId );
 	

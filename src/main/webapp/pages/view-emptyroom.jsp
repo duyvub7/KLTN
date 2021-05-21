@@ -15,14 +15,21 @@
 	<jsp:include page="/pages/layout/navbar.jsp" />
 	<div class="sticky-op bg-white" id="auto-op">
         <div class="container">
-            <div class="col-8 row mt-2 mx-auto">
-                <div class="col-4 px-0 text-center">
+            <div class="col-10 row mt-2 mx-auto">
+                <div class="col-3 px-0 text-center">
                     <a href="emptyroom-hot" class="text-dark f-16">Phù hợp</a>
                 </div>
-                <div class="col-4 px-0 text-center">
+                <div class="col-3 px-0 text-center">
                     <a href="emptyroom" class="text-dark f-16">Mới nhất</a>
                 </div>
-                <div class="col-4 pl-5">
+                <div class="col-3 px-0 text-center">
+                    <select class="form-control form-control-sm py-0 select-ssm with-150" onChange="window.location.href='${contextPath}/emptyroom'+this.value">
+                    	<option value="">Giá phòng</option>
+                    	<option value="-asc">Giá tăng dần </option>
+                    	<option value="-desc">Giá giảm dần </option>
+                    </select>
+                </div>
+                <div class="col-3 pl-5">
                     <select class="form-control form-control-sm py-0 select-ssm with-150" onChange="window.location.href='${contextPath}/emptyroom/'+this.value">
                         <c:forEach var="province" items="${listProvince }">
                       		<option value="${province.province_id }">${province.province_name }</option>
@@ -354,7 +361,9 @@
 		                                            <p class="text-muted">
 		                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 		                                            </p>
-		                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+		                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+		                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+		                                            </c:if>
 		                                            <div class="mt-back-5">
 		                                                <p>${comment.comment_content }</p>
 		                                            </div>
@@ -383,7 +392,9 @@
 		                                            <p class="text-muted">
 		                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 		                                            </p>
-		                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+		                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+		                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+		                                            </c:if>
 		                                            <div class="mt-back-5">
 		                                                <p>${comment.comment_content }</p>
 		                                            </div>

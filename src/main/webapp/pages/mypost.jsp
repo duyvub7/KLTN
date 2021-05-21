@@ -230,7 +230,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -259,7 +261,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -415,7 +419,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -444,7 +450,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -616,7 +624,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -645,7 +655,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -817,7 +829,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -846,7 +860,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -1018,7 +1034,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>
@@ -1047,7 +1065,9 @@
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
 						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
 						                                            </div>

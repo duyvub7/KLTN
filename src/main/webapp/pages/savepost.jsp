@@ -173,31 +173,44 @@
 						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
 						                                </div>
 					                                </c:if>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
 					                                <div class="com-area-1">
 					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <div>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -205,21 +218,30 @@
 					                                </div>
 					                                <div class="display-0 com-area-2">
 					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
-						                                            <div>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -322,31 +344,44 @@
 						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
 						                                </div>
 					                                </c:if>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
 					                                <div class="com-area-1">
 					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <div>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -354,21 +389,30 @@
 					                                </div>
 					                                <div class="display-0 com-area-2">
 					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
-						                                            <div>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -471,31 +515,44 @@
 						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
 						                                </div>
 					                                </c:if>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
 					                                <div class="com-area-1">
 					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <div>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -503,21 +560,30 @@
 					                                </div>
 					                                <div class="display-0 com-area-2">
 					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
-						                                            <div>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -620,31 +686,44 @@
 						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
 						                                </div>
 					                                </c:if>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
 					                                <div class="com-area-1">
 					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <div>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -652,21 +731,30 @@
 					                                </div>
 					                                <div class="display-0 com-area-2">
 					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
-						                                            <div>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -769,31 +857,44 @@
 						                                    <p class="text-success display-0 hide-com">Ẩn bớt bình luận</p>
 						                                </div>
 					                                </c:if>
-					                                <div class="row mb-2">
-					                                    <a href="#" class="col-1 px-2 mr-2">
+					                                <div class="row mb-back-10">
+					                                    <a href="${contextPath}/my-profile" class="col-1 px-2 mr-2">
 					                                        <figure class="profile-thumb-small">
-					                                            <img src="${current_account.avatar }" alt="profile picture">
+					                                            <img src="${contextPath}/${current_account.avatar }" alt="profile picture">
 					                                        </figure>
 					                                    </a>
-					                                    <input class="col-10 form-control rounded" placeholder="Nhập bình luận"/>
+					                                    <form action="${contextPath}/add-comment/${post.post_id }" method="post" enctype="multipart/form-data" class="col-11 row">
+					                                    	<input name="content" class="col-12 form-control rounded pr-5" placeholder="Nhập bình luận" autocomplete="off"/>
+						                                    <i class="fa fa-picture-o f-18 image-input" onclick="document.getElementById('file-com${post.post_id}').click()"></i>
+					  										<input id="file-com${post.post_id}" name="file" style="visibility:hidden;" type="file">
+					                                    </form>
 					                                </div>
 					                                <div class="com-area-1">
 					                                	<c:forEach var="comment" items="${post.getComment() }" begin="0" end="1">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
 						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
 						                                            </p>
-						                                            <div>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>
@@ -801,21 +902,30 @@
 					                                </div>
 					                                <div class="display-0 com-area-2">
 					                                    <c:forEach var="comment" items="${post.getComment() }" begin="2">
-					                                		<div class="unorder-list mb-2 border-bot-light">
+					                                		<div class="unorder-list mb-2 border-bot-light comment-num-${comment.comment_id }">
 						                                        <div class="profile-thumb">
-						                                            <a href="#">
+						                                            <a href="${contextPath}/profile/${comment.getAccount_id() }">
 						                                                <figure class="profile-thumb-small">
 						                                                    <img src="${comment.getAccount().getAvatar() }" alt="profile picture">
 						                                                </figure>
 						                                            </a>
 						                                        </div>
 						                                        <div class="unorder-list-info with-500">
-						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="#">${comment.getAccount().getName() }</a></h3>
+						                                            <h3 class="list-title mt-1 mr-2 float-left"><a href="${contextPath}/profile/${comment.getAccount_id() }">
+						                                            	${comment.getAccount().getName() }</a></h3>
 						                                            <p class="text-muted">
-																		<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
-																	</p>
-						                                            <div>
+						                                            	<fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${comment.time }"/>
+						                                            </p>
+						                                            <c:if test="${comment.getAccount_id() == current_account.account_id || post.account_id == current_account.account_id }">
+						                                            	<button class="btn-secondary btn-sm rounded float-right delete-comment" data-id="${comment.comment_id }">Xóa</button>
+						                                            </c:if>
+						                                            <div class="mt-back-5">
 						                                                <p>${comment.comment_content }</p>
+						                                            </div>
+						                                            <div class="col-12 ml-back-15">
+						                                            	<c:forEach var="image" items="${comment.getImage() }">
+						                                            		<img src="${contextPath}/${image.getUrl() }" class="float-left mr-1 mb-1 with-100 height-70">
+						                                            	</c:forEach>
 						                                            </div>
 						                                        </div>
 						                                    </div>

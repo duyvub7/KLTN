@@ -71,7 +71,7 @@
 			                                        </div>
 			                                        <div class="unorder-list-info">
 														<h3 class="list-title f-16"><a href="#">${friend.getFrom_account().getName() }</a></h3>
-			                                            <button data-id="${friend.friend_id }" class="remove-btn mt-1" id="remove-btn">Xóa bạn bè</button>
+			                                            <button data-id="${friend.friend_id }" data-name="${friend.getFrom_account().getName() }" class="remove-btn mt-1">Xóa bạn bè</button>
 			                                        </div>
 			                                    </div>
 										    </c:when>
@@ -86,7 +86,7 @@
 			                                        </div>
 			                                        <div class="unorder-list-info">
 														<h3 class="list-title f-16"><a href="#">${friend.getTo_account().getName() }</a></h3>
-			                                            <button data-id="${friend.friend_id }" class="remove-btn mt-1" id="remove-btn">Xóa bạn bè</button>
+			                                            <button data-id="${friend.friend_id }" data-name="${friend.getTo_account().getName() }" class="remove-btn mt-1">Xóa bạn bè</button>
 			                                        </div>
 			                                    </div>  
 										    </c:otherwise>  
@@ -108,7 +108,7 @@
                     <h5 class="modal-title">Xác nhận xóa người bạn này?</h5>
                 </div>
                 <div class="text-center my-3">
-                    <p class="f-16">Nguyễn Trần Diệu Linh</p>
+                    <p class="f-16" id="name-remove">Nguyễn Trần Diệu Linh</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="post-share-btn" data-dismiss="modal">Hủy</button>
@@ -129,6 +129,7 @@
             $('.remove-btn').click( function () {
                 const id = $(this).attr('data-id')
                 $('#confirmModal').modal();
+                $('#name-remove').html($(this).attr('data-name'))
                 $('#remove-friend-btn').attr('href', 'delete-friend/'+id);
             });
         });
