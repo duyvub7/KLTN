@@ -45,104 +45,54 @@
                 </div>
             </div>
             <div class="container">
-                <div class="col-10 mx-auto">
+                <div class="col-lg-10 col-11 mx-auto">
                     <div class="about-description mb-4">
                         <div class="tab-content">
                             <div class="author-desc-title d-flex">
-                                <h6 class="author">Thông tin cá nhân</h6>
-                                <div class="post-settings-bar">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <div class="post-settings arrow-shape">
-                                        <ul>
-                                            <li><button class="changeAvatar-btn">Kết bạn</button></li>
-                                            <li><button class="changeWall-btn">Theo dõi</button></li>
-                                            <li><a href="edit-profile"><button>Báo cáo tài khoản</button></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <h6 class="author mx-auto">Danh sách bạn bè ( ${listAccFriend.size() } )</h6>
                             </div>
-                            <div class="container f-16">
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Giới thiệu:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<p>${viewAccount.introduction }</p>
-                            		</div>
-                            	</div>
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Họ tên:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<p>${viewAccount.name }</p>
-                            		</div>
-                            	</div>
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Giới tính:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<c:choose>
-		                                	<c:when test="${viewAccount.gender == 1 }">
-		                                		<p>Nam</p>
-		                                	</c:when>
-		                                	<c:when test="${viewAccount.gender == 2 }">
-		                                		<p>Nữ</p>
-		                                	</c:when>
-		                                	<c:otherwise>
-		                                		<p>Chưa biết</p>
-		                                	</c:otherwise>
-		                                </c:choose>
-                            		</div>
-                            	</div>
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Ngày sinh:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<p><fmt:formatDate type="date" pattern="dd-MM-yyyy" value="${viewAccount.birthday }"/></p>
-                            		</div>
-                            	</div>
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Số điện thoại:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<p>${viewAccount.phone }</p>
-                            		</div>
-                            	</div>
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Email:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<p>${viewAccount.email }</p>
-                            		</div>
-                            	</div>
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Tỉnh thành:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<p>${viewAccount.getProvince().province_name }</p>
-                            		</div>
-                            	</div>
-                            	<div class="row mb-3 border-opacity">
-                            		<div class="col-sm-3 col-2">
-                            			<p>Địa chỉ:</p>
-                            		</div>
-                            		<div class="col-sm-9 col-10">
-                            			<p>${viewAccount.address }</p>
-                            		</div>
-                            	</div>
+                            <div class="row mt-5">
+                            	<c:forEach var="friend" items="${listAccFriend }">
+                            		<div class="col-12 col-md-6 col-lg-6 mt-3 mb-5">
+                            			<c:choose>  
+										    <c:when test="${friend.getTo_account().getAccount_id() == current_account.account_id}">  
+										       <div class="unorder-list">
+			                                        <div class="profile-thumb">
+			                                            <a href="#">
+			                                                <figure class="profile-thumb-middle">
+			                                                    <img src="${friend.getFrom_account().getAvatar() }" alt="profile picture">
+			                                                </figure>
+			                                            </a>
+			                                        </div>
+			                                        <div class="unorder-list-info">
+														<h3 class="list-title f-16"><a href="#">${friend.getFrom_account().getName() }</a></h3>
+			                                            <button data-id="${friend.friend_id }" class="btn-info">Kết bạn</button>
+			                                        </div>
+			                                    </div>
+										    </c:when>
+										    <c:otherwise>
+										    	<div class="unorder-list">
+			                                        <div class="profile-thumb">
+			                                            <a href="#">
+			                                                <figure class="profile-thumb-middle">
+			                                                    <img src="${friend.getTo_account().getAvatar() }" alt="profile picture">
+			                                                </figure>
+			                                            </a>
+			                                        </div>
+			                                        <div class="unorder-list-info">
+														<h3 class="list-title f-16"><a href="#">${friend.getTo_account().getName() }</a></h3>
+			                                            <button data-id="${friend.friend_id }" class="remove-btn mt-1" id="remove-btn">Xóa bạn bè</button>
+			                                        </div>
+			                                    </div>  
+										    </c:otherwise>  
+										</c:choose>
+	                                </div>
+                            	</c:forEach>
                             </div>
-                       </div>
-                  </div>
-             </div>
-        </div>
+                        </div>
+                   </div>
+              </div>
+         </div>
     </main>
     
     <div class="scroll-top not-visible">

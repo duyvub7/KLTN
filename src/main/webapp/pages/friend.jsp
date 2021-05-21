@@ -54,10 +54,10 @@
                     <div class="about-description mb-4">
                         <div class="tab-content">
                             <div class="author-desc-title d-flex">
-                                <h6 class="author mx-auto">Danh sách bạn bè ( ${listFriend.size() } )</h6>
+                                <h6 class="author mx-auto">Danh sách bạn bè ( ${listMyFriend.size() } )</h6>
                             </div>
                             <div class="row mt-5">
-                            	<c:forEach var="friend" items="${listFriend }">
+                            	<c:forEach var="friend" items="${listMyFriend }">
                             		<div class="col-12 col-md-6 col-lg-6 mt-3 mb-5">
                             			<c:choose>  
 										    <c:when test="${friend.getTo_account().getAccount_id() == current_account.account_id}">  

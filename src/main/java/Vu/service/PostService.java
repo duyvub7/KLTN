@@ -44,10 +44,20 @@ public class PostService {
 	public List<Post> findByAccountId( int id ) {
 		return postRepository.findByAccountId(id);
 	}
-
+	
 	public List<Post> findByAccountId( int id, int type) {
 		return postRepository.findByAccountId(id, type);
 	}
+	
+	public boolean checkByAccountId( int accId, int postId ) {
+		for(Post p : postRepository.findByAccountId(accId)) {
+			if(p.getPost_id() == postId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 	public List<Post> findAllSavePost ( int id ) {
 		return postRepository.findAllSavePost(id);

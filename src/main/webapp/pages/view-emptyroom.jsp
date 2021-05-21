@@ -66,61 +66,61 @@
                                 <div class="modal fade" id="textbox" aria-labelledby="textbox">
                                     <div class="modal-dialog">
             							<div class="modal-content">
-            								<form action="add-emptyroom" method="POST" enctype="multipart/form-data">
-            									<div class="modal-header">
-	                                                <h5 class="modal-title">Chia sẻ phòng trọ muốn cho thuê</h5>
-	                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                                                    <span aria-hidden="true">&times;</span>
-	                                                </button>
-	                                            </div>
-	                                            <div class="modal-body custom-scroll col-12">
-	                                                <textarea name="content" class="share-field-big custom-scroll" placeholder="Hãy viết gì đó"></textarea>
-	                                            </div>
-	                                            <div class="col-12">
-	                                                <div class="container">
-	                                                    <div class="panel my-2">
-	                                                        <div class="button_outer">
-	                                                            <div class="btn_upload">
-	                                                                <input type="file" id="upload_file" name="file">
-	                                                                Thêm ảnh
-	                                                            </div>
-	                                                            <div class="processing_bar"></div>
-	                                                            <div class="success_box"></div>
-	                                                        </div>
-	                                                    </div>
-	                                                    <div class="error_msg"></div>
-	                                                    <div class="uploaded_file_view my-2" id="uploaded_view">
-	                                                        <span class="file_remove">X</span>
-	                                                    </div>
-	                                                </div>
-	                                                <div class="col-12" id="option-area">
-							                            <div class="row ml-1">
-							                                <div class="col-12 row form-group">
-							                                    <p class="col-md-4 col-lg-4 col-12 pt-2">Tỉnh/ Thành phố :</p>
-							                                    <div class="select-small">
-							                                        <select class="js-example-basic-single col-md-8 col-lg-8 col-12 with-300" name="province">
-							                                        	<c:forEach var="province" items="${listProvince }">
-							                                        		<option value="${province.province_id }">${province.province_name }</option>
-							                                        	</c:forEach>
-							                                        </select>
-							                                    </div>
-							                                </div>
-							                                <div class="col-12 form-group row">
-							                                    <div class="col-md-4">
-							                                        <p id="modal-price">Giá (/tháng) :</p>
-							                                    </div>
-							                                    <div class="col-md-8 pl-0">
-							                                        <input type="number" name="price" class="form-control with-300" value="0"> 
-							                                    </div>
-							                                </div>
-							                            </div>
-							                        </div>
-	                                            </div>
-	                                            <div class="modal-footer">
-	                                                <button type="button" class="post-share-btn" data-dismiss="modal">Hủy</button>
-	                                                <input type="submit" class="post-share-btn border-0" value="Đăng bài"/>
-	                                            </div>
-            								</form>
+           								<form action="add-emptyroom" method="POST" enctype="multipart/form-data">
+           									<div class="modal-header">
+                                                <h5 class="modal-title">Chia sẻ phòng trọ muốn cho thuê</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body custom-scroll col-12">
+                                                <textarea name="content" class="share-field-big custom-scroll" placeholder="Hãy viết gì đó"></textarea>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="container">
+                                                    <div class="panel my-2">
+                                                        <div class="button_outer">
+                                                            <div class="btn_upload">
+                                                                <input type="file" id="upload_file" name="file">
+                                                                Thêm ảnh
+                                                            </div>
+                                                            <div class="processing_bar"></div>
+                                                            <div class="success_box"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="error_msg"></div>
+                                                    <div class="uploaded_file_view my-2" id="uploaded_view">
+                                                        <span class="file_remove">X</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12" id="option-area">
+						                            <div class="row ml-1">
+						                                <div class="col-12 row form-group">
+						                                    <p class="col-md-4 col-lg-4 col-12 pt-2">Tỉnh/ Thành phố :</p>
+						                                    <div class="select-small">
+						                                        <select class="js-example-basic-single col-md-8 col-lg-8 col-12 with-300" name="province">
+						                                        	<c:forEach var="province" items="${listProvince }">
+						                                        		<option value="${province.province_id }">${province.province_name }</option>
+						                                        	</c:forEach>
+						                                        </select>
+						                                    </div>
+						                                </div>
+						                                <div class="col-12 form-group row">
+						                                    <div class="col-md-4">
+						                                        <p id="modal-price">Giá (/tháng) :</p>
+						                                    </div>
+						                                    <div class="col-md-8 pl-0">
+						                                        <input type="number" name="price" class="form-control with-300" value="0"> 
+						                                    </div>
+						                                </div>
+						                            </div>
+						                        </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="post-share-btn" data-dismiss="modal">Hủy</button>
+                                                <input type="submit" class="post-share-btn border-0" value="Đăng bài"/>
+                                            </div>
+           								</form>
                                         </div>
                                     </div>
                                 </div>
@@ -173,7 +173,11 @@
 	                                        <ul>
 	                                        	<c:choose>
 		                                        	<c:when test="${ post.getAccount().getAccount_id() == current_account.account_id }">
-		                                        		<li><button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button></li>
+		                                        		<li>
+		                                        			<a href="${contextPath}/edit-post/${post.post_id }">
+		                                        				<button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button>
+		                                        			</a>
+		                                        		</li>
 	                                            		<li><button class="remove-mypost" data-id="${post.post_id }" data-cont="${fn:substring(post.post_content, 0, 100) }">
 	                                            			Xóa bài viết</button></li>
 		                                        	</c:when>
@@ -230,29 +234,29 @@
 				                                        	<c:when test="${ check == 'yes' }">
 				                                        		<li class="request1"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2 display-0"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3 display-0"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4 display-0"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3 display-0"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4 display-0"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5 display-0"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 				                                        	</c:when>
 				                                        	<c:when test="${ check == 'send' }">
 				                                        		<li class="request1 display-0"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2 display-0"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3 display-0"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4 display-0"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3 display-0"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4 display-0"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 				                                        	</c:when>
 				                                        	<c:when test="${ check == 'receive' }">
 				                                        		<li class="request1 display-0"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2 display-0"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5 display-0"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 				                                        	</c:when>
 				                                        	<c:otherwise>
 				                                        		<li class="request1 display-0"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3 display-0"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4 display-0"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3 display-0"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4 display-0"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5 display-0"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 				                                        	</c:otherwise>
 				                                        </c:choose>

@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -16,17 +17,17 @@
 	<main>
         <div class="main-wrapper pt-80 pb-3">
             <div class="container">
-                <h3 class=" text-center mb-2">Messaging</h3>
+                <h3 class=" text-center mb-2">Tin nhắn</h3>
                 <div class="messaging">
                     <div class="inbox_msg">
                         <div class="inbox_people">
                             <div class="headind_srch">
                                 <div class="recent_heading">
-                                    <h4>Recent</h4>
+                                    <h4>Danh sách</h4>
                                 </div>
                                 <div class="srch_bar">
                                     <div class="stylish-input-group">
-                                        <input type="text" class="search-bar" placeholder="Search">
+                                        <input type="text" class="search-bar" placeholder="tìm kiếm">
                                         <span class="input-group-addon">
                                             <button type="button"> <i class="fa fa-search" aria-hidden="true"></i>
                                             </button>
@@ -39,175 +40,157 @@
                                 	<c:choose>  
 									    <c:when test="${listChat.get(0).getTo_account().getAccount_id() == current_account.account_id}">  
 									       <div class="chat_people">
-		                                        <div class="chat_img"> <img src="${listChat.get(0).getFrom_account().getAvatar() }"
-		                                                alt="sunil"> </div>
+		                                        <div class="chat_img"> <img src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
 		                                        <div class="chat_ib">
 		                                            <h5>
 		                                            	${listChat.get(0).getFrom_account().getName() }
-		                                            	<span class="chat_date">${fn:substring(listChat.get(0).time, 0, 16) }</span>
+		                                            	<span class="chat_date"><fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${listChat.get(0).time }"/></span>
 		                                            </h5>
-		                                            <p><strong>Bạn: </strong>${fn:substring(listChat.get(0).message_content, 0, 40) }</p>
+		                                            <p>${fn:substring(listChat.get(0).message_content, 0, 40) }</p>
 		                                        </div>
 		                                    </div>
 									    </c:when>
 									    <c:otherwise>  
 									       <div class="chat_people">
-		                                        <div class="chat_img"> <img src="${listChat.get(0).getTo_account().getAvatar() }"
-		                                                alt="sunil"> </div>
+		                                        <div class="chat_img"> <img src="${listChat.get(0).getTo_account().getAvatar() }"> </div>
 		                                        <div class="chat_ib">
 		                                            <h5>
-		                                            	${listChat.get(0).getFrom_account().getName() }
-		                                            	<span class="chat_date">${fn:substring(listChat.get(0).time, 0, 16) }</span>
+		                                            	${listChat.get(0).getTo_account().getName() }
+		                                            	<span class="chat_date"><fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${listChat.get(0).time }"/></span>
 		                                            </h5>
-		                                            <p>${fn:substring(listChat.get(0).message_content, 0, 40) }</p>
+		                                            <p><strong>Bạn: </strong>${fn:substring(listChat.get(0).message_content, 0, 40) }</p>
 		                                        </div>
 		                                    </div>
 									    </c:otherwise>  
 									</c:choose>
                                 </div>
-                                <c:forEach var="chat" items="${listChat }" begin="2">
+                                <c:forEach var="chat" items="${listChat }" begin="1">
                                 	<div class="chat_list chat">
 	                            		<c:choose>
 											<c:when test="${chat.getTo_account().getAccount_id() == current_account.account_id}">  
 											    <div class="chat_people">
-			                                        <div class="chat_img"> <img src="${chat.getFrom_account().getAvatar() }"
-			                                                alt="sunil"> </div>
+			                                        <div class="chat_img"> <img src="${chat.getFrom_account().getAvatar() }"> </div>
 			                                        <div class="chat_ib">
 			                                            <h5>
-			                                            	${listChat.get(0).getFrom_account().getName() }
-			                                            	<span class="chat_date">${fn:substring(listChat.get(0).time, 0, 16) }</span>
+			                                            	${chat.getFrom_account().getName() }
+			                                            	<span class="chat_date"><fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${chat.time }"/></span>
 			                                            </h5>
-			                                            <p><strong>Bạn: </strong>${fn:substring(listChat.get(0).message_content, 0, 40) }</p>
+			                                            <p>${fn:substring(chat.message_content, 0, 40) }</p>
 			                                        </div>
 			                                    </div>
 											</c:when>
 											<c:otherwise>
 												<div class="chat_people">
-			                                        <div class="chat_img"> <img src="${chat.getTo_account().getAvatar() }"
-			                                                alt="sunil"> </div>
+			                                        <div class="chat_img"> <img src="${chat.getTo_account().getAvatar() }"> </div>
 			                                        <div class="chat_ib">
 			                                            <h5>
-			                                            	${listChat.get(0).getFrom_account().getName() }
-			                                            	<span class="chat_date">${fn:substring(listChat.get(0).time, 0, 16) }</span>
+			                                            	${chat.getTo_account().getName() }
+			                                            	<span class="chat_date"><fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${chat.time }"/></span>
 			                                            </h5>
-			                                            <p>${fn:substring(listChat.get(0).message_content, 0, 40) }</p>
+			                                            <p><strong>Bạn: </strong>${fn:substring(chat.message_content, 0, 40) }</p>
 			                                        </div>
 			                                    </div>
 										    </c:otherwise>  
 										</c:choose>
 									</div>
                             	</c:forEach>
-                                
-                                <div class="chat_list">
-                                    <div class="chat_people">
-                                        <div class="chat_img"> <img
-                                                src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                                        </div>
-                                        <div class="chat_ib">
-                                            <h5>Sunil Rajput <span class="chat_date">Dec 22</span></h5>
-                                            <p>Test, which is a new approach to have all solutions
-                                                astrology under one roof.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat_list">
-                                    <div class="chat_people">
-                                        <div class="chat_img"> <img
-                                                src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                                        </div>
-                                        <div class="chat_ib">
-                                            <h5>Sunil Rajput <span class="chat_date">Dec 22</span></h5>
-                                            <p>Test, which is a new approach to have all solutions
-                                                astrology under one roof.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat_list">
-                                    <div class="chat_people">
-                                        <div class="chat_img"> <img
-                                                src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                                        </div>
-                                        <div class="chat_ib">
-                                            <h5>Sunil Rajput <span class="chat_date">Dec 22</span></h5>
-                                            <p>Test, which is a new approach to have all solutions
-                                                astrology under one roof.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat_list">
-                                    <div class="chat_people">
-                                        <div class="chat_img"> <img
-                                                src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                                        </div>
-                                        <div class="chat_ib">
-                                            <h5>Sunil Rajput <span class="chat_date">Dec 22</span></h5>
-                                            <p>Test, which is a new approach to have all solutions
-                                                astrology under one roof.</p>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="mesgs">
                             <div class="msg_history">
-                                <div class="incoming_msg">
+                            	<c:forEach var="message" items="${listMessageView }">
+                            		<c:choose>
+											<c:when test="${message.getTo_account().getAccount_id() == current_account.account_id}">
+												<div class="incoming_msg">
+				                                    <div class="incoming_msg_img"> <img
+				                                            src="${message.getFrom_account().getAvatar() }"> </div>
+				                                    <div class="received_msg">
+				                                        <div class="received_withd_msg">
+				                                            <p>${message.message_content }</p>
+				                                            <span class="time_date"><fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${message.time }"/></span>
+				                                        </div>
+				                                    </div>
+				                                </div>
+											</c:when>
+											<c:otherwise>
+												<div class="outgoing_msg">
+				                                    <div class="sent_msg">
+				                                        <p>${message.message_content }</p>
+				                                        <span class="time_date"><fmt:formatDate type="both" pattern="dd-MM-yyyy HH:mm" value="${message.time }"/></span>
+				                                    </div>
+				                                </div>
+											</c:otherwise>
+									</c:choose>		
+                            	</c:forEach>
+                            	<h5>${listMessageView.size() }</h5>
+                            	<div class="incoming_msg">
                                     <div class="incoming_msg_img"> <img
-                                            src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
                                     <div class="received_msg">
                                         <div class="received_withd_msg">
-                                            <p>Test which is a new approach to have all
-                                                solutions</p>
-                                            <span class="time_date"> 11:01 AM | June 9</span>
+                                            <p>Xin chào</p>
+                                            <span class="time_date">13-07-2021 09:11</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="incoming_msg">
+                                    <div class="incoming_msg_img"> <img
+                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
+                                    <div class="received_msg">
+                                        <div class="received_withd_msg">
+                                            <p>Trọ ở 13 Nguyễn Huệ còn không bạn</p>
+                                            <span class="time_date">13-07-2021 09:11</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="outgoing_msg">
                                     <div class="sent_msg">
-                                        <p>Test which is a new approach to have all
-                                            solutions</p>
-                                        <span class="time_date"> 11:01 AM | June 9</span>
+                                        <p>Còn nhé bạn</p>
+                                        <span class="time_date">13-07-2021 09:15</span>
                                     </div>
                                 </div>
                                 <div class="incoming_msg">
                                     <div class="incoming_msg_img"> <img
-                                            src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
                                     <div class="received_msg">
                                         <div class="received_withd_msg">
-                                            <p>Test, which is a new approach to have</p>
-                                            <span class="time_date"> 11:01 AM | Yesterday</span>
+                                            <p>OK</p>
+                                            <span class="time_date">13-07-2021 09:17</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="incoming_msg">
+                                    <div class="incoming_msg_img"> <img
+                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
+                                    <div class="received_msg">
+                                        <div class="received_withd_msg">
+                                            <p>Cảm ơn về thông tin</p>
+                                            <span class="time_date">13-07-2021 09:18</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="outgoing_msg">
                                     <div class="sent_msg">
-                                        <p>Apollo University, Delhi, India Test</p>
-                                        <span class="time_date"> 11:01 AM | Today</span>
+                                        <p>Nếu muốn xem phòng thì liên hệ mình nhé</p>
+                                        <span class="time_date">13-07-2021 09:28</span>
                                     </div>
                                 </div>
                                 <div class="incoming_msg">
                                     <div class="incoming_msg_img"> <img
-                                            src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
                                     <div class="received_msg">
                                         <div class="received_withd_msg">
-                                            <p>We work directly with our designers and suppliers,
-                                                and sell direct to you, which means quality, exclusive
-                                                products, at a price anyone can afford.</p>
-                                            <span class="time_date"> 11:01 AM | Today</span>
+                                            <p>OK</p>
+                                            <span class="time_date">13-07-2021 09:40</span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="outgoing_msg">
-                                    <div class="sent_msg">
-                                        <p>Apollo University, Delhi, India Test</p>
-                                        <span class="time_date"> 11:01 AM | Today</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="type_msg">
                                 <div class="input_msg_write">
-                                    <input type="text" class="write_msg" placeholder="Type a message" />
-                                    <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o"
-                                            aria-hidden="true"></i></button>
+                                    <input type="text" class="write_msg col-10" placeholder="Nhập tin nhắn" />
+                                    <i class="fa fa-file-image-o float-right;" style="font-size: 20px; padding-top: 20px;" aria-hidden="true" ></i>
+                                    <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         </div>

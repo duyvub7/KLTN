@@ -243,13 +243,13 @@
 	                                                                <td>${fn:substring(account.birthday, 0, 10) }</td>
 	                                                                <td>
 	                                                                	<div class="mx-auto">
-	                                                                		<button class="btn-delete mx-3">Xóa</button>
+	                                                                		<a href="${contextPath }/admin/delete-account/${account.account_id }"><button class="btn-delete mx-3">Xóa</button></a>
 	                                                                		<c:choose>  
 																			    <c:when test="${account.account_status == true}">  
-																			       <button class="btn-lock">Khóa</button>
+																			       <a href="${contextPath }/admin/block-account/${account.account_id }"><button class="btn-lock">Khóa</button></a>
 																			    </c:when>
 																			    <c:otherwise>  
-																			       <button class="btn-unlock">Mở khóa</button>
+																			       <a href="${contextPath }/admin/unlock-account/${account.account_id }"><button class="btn-unlock">Mở khóa</button></a>
 																			    </c:otherwise>  
 																			</c:choose>
 	                                                                	</div>

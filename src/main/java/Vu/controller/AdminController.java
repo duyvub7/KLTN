@@ -5,12 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import Vu.model.Account;
 import Vu.service.AccountService;
 import Vu.service.NotificationService;
+import Vu.service.PostImageService;
 import Vu.service.PostService;
 
 @Controller
@@ -24,12 +24,15 @@ public class AdminController {
 	private PostService postService;
 	
 	@Autowired
+	private PostImageService postImageService;
+	
+	@Autowired
 	private NotificationService notificationService;
 	
-	// account normal status: 1
-	private static final int STATUS_AVAILBLE = 1;
-	// account block status: 1
-	private static final int  STATUS_BLOCK = 0;
+	// account normal status: true
+	private static final boolean STATUS_AVAILBLE = true;
+	// account block status: false
+	private static final boolean STATUS_BLOCK = false;
 
 	@GetMapping(value = "/manager-account")
 	public String manager_account_get(Model model) {
@@ -49,24 +52,24 @@ public class AdminController {
 		return "admin/manager-availableaccount";
 	}
 	
-	@PostMapping(value = "/block-account/{accId}")
-	public String blockaccount_post(@PathVariable("accId") int accId) {
+	@GetMapping(value = "/block-account/{accId}")
+	public String blockaccount_get(@PathVariable("accId") int accId) {
 		Account acc = accountService.findOne(accId);
-		acc.setAccount_status(false);
+		acc.setAccount_status(STATUS_BLOCK);
 		accountService.save(acc);
 		return "redirect:/admin/manager-account";
 	}
 	
-	@PostMapping(value = "/unlock-account/{accId}")
-	public String unlockaccount_post(@PathVariable("accId") int accId) {
+	@GetMapping(value = "/unlock-account/{accId}")
+	public String unlockaccount_get(@PathVariable("accId") int accId) {
 		Account acc = accountService.findOne(accId);
-		acc.setAccount_status(true);
+		acc.setAccount_status(STATUS_AVAILBLE);
 		accountService.save(acc);
 		return "redirect:/admin/manager-account";
 	}
 	
-	@PostMapping(value = "/delete-account/{accId}")
-	public String deleteaccount_post(@PathVariable("accId") int accId) {
+	@GetMapping(value = "/delete-account/{accId}")
+	public String deleteaccount_get(@PathVariable("accId") int accId) {
 		accountService.deleteById(accId);
 		return "redirect:/admin/manager-account";
 	}
@@ -77,8 +80,9 @@ public class AdminController {
 		return "admin/manager-post";
 	}
 	
-	@PostMapping(value = "/delete-post/{postId}")
-	public String deletepost_post(@PathVariable("postId") int postId) {
+	@GetMapping(value = "/delete-post/{postId}")
+	public String deletepost_get(@PathVariable("postId") int postId) {
+		postImageService.deleteByPost(postId);
 		postService.delete(postId);
 		return "redirect:/admin/manager-post";
 	}

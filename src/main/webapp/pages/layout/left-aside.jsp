@@ -33,7 +33,7 @@
                 	<c:choose>
                 		<c:when test="${listRequest.size() < 5 }">
                 			<c:forEach var="request" items="${listRequest }">
-		                		<li class="unorder-list mb-3 option-request0">
+		                		<li class="unorder-list mb-3 option-request0 request-num-${request.getFrom_account().getAccount_id() }">
 			                         <div class="profile-thumb">
 			                             <a href="${contextPath}/profile/${request.getFrom_account().getAccount_id() }">
 			                                 <figure class="profile-thumb-small">
@@ -58,7 +58,7 @@
                 		</c:when>
                 		<c:otherwise>
                 			<c:forEach var="request" items="${listRequest }" begin="0" end="4">
-		                		<li class="unorder-list mb-3 option-request0">
+		                		<li class="unorder-list mb-3 option-request0 request-num-${request.getFrom_account().getAccount_id() }">
 			                         <div class="profile-thumb">
 			                             <a href="${contextPath}/profile/${request.getFrom_account().getAccount_id() }">
 			                                 <figure class="profile-thumb-small">

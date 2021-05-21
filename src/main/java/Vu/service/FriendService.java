@@ -35,9 +35,16 @@ public class FriendService {
 		return friendRepository.findAllSend(id);
 	}
 	
-	public Friend findOne(int accId, int postId) {
-		if(friendRepository.findFriend(accId, postId).size() > 0)
-			return friendRepository.findFriend(accId, postId).get(0);
+	public Friend findOne(int accId, int toId) {
+		if(friendRepository.findFriend(accId, toId).size() > 0)
+			return friendRepository.findFriend(accId, toId).get(0);
+		else 
+			return null;
+	}
+	
+	public Friend findOneRequest(int accId, int toId) {
+		if(friendRepository.findRequest(accId, toId).size() > 0)
+			return friendRepository.findRequest(accId, toId).get(0);
 		else 
 			return null;
 	}

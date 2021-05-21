@@ -242,6 +242,7 @@
 				                                </div>
 				                                <div class="posted-author">
 				                                    <h6 class="author"><a href="${contextPath}/profile/${post.getAccount_id() }">${account.getName() }</a></h6>
+				                                    <button class="btn-info rounded ml-1 mt-2">Kết bạn</button>
 				                                </div>
 				                            </div>
 				                        </div>

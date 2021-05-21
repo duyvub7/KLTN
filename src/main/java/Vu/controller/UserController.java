@@ -252,33 +252,35 @@ public class UserController {
 	@PostMapping(value = "add-post")
 	public String add_post(@RequestParam("file") MultipartFile file, @RequestParam("content") String content, 
 			HttpServletRequest request, HttpSession session) {
-		try {
-			Post p = new Post();
-			Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
-			p.setAccount_id(acc.getAccount_id());
-			p.setPost_content(content);
-			p.setPost_status(true);
-			Timestamp d = Timestamp.valueOf(LocalDateTime.now());
-			p.setPost_date(d);
-			p.setProvince_id(64);
-			p.setPost_type(1);
-			postService.save(p);
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			if(fileName!=null && fileName!="") {
-				String url = "resources/contents/images/post/"+fileName;
-				Post_Image pi = new Post_Image();
-				pi.setUrl(url);
-				pi.setPost_id(postService.getLastPostId());
-				postImageService.save(pi);
-				Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
-				try {
-					Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					e.printStackTrace();
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		if( (content != null && content.replaceAll(" ", "").length() > 0) || (fileName!=null && fileName!="") ) {
+			try {
+				Post p = new Post();
+				Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+				p.setAccount_id(acc.getAccount_id());
+				p.setPost_content(content);
+				p.setPost_status(true);
+				Timestamp d = Timestamp.valueOf(LocalDateTime.now());
+				p.setPost_date(d);
+				p.setProvince_id(64);
+				p.setPost_type(1);
+				postService.save(p);
+				if(fileName!=null && fileName!="") {
+					String url = "resources/contents/images/post/"+fileName;
+					Post_Image pi = new Post_Image();
+					pi.setUrl(url);
+					pi.setPost_id(postService.getLastPostId());
+					postImageService.save(pi);
+					Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
+					try {
+						Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		String referrer = request.getHeader("referer").replace("http://localhost:8080/KLTN", "");
 		return "redirect:" + referrer;
@@ -288,34 +290,36 @@ public class UserController {
 	public String add_emptyroom(@RequestParam("file") MultipartFile file, @RequestParam("content") String content, 
 			@RequestParam("province") int province_id, @RequestParam("price") int price,
 			HttpServletRequest request, HttpSession session) {
-		try {
-			Post p = new Post();
-			Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
-			p.setAccount_id(acc.getAccount_id());
-			p.setPost_content(content);
-			p.setProvince_id(province_id);
-			p.setPrice(price);
-			p.setPost_status(true);
-			Timestamp d = Timestamp.valueOf(LocalDateTime.now());
-			p.setPost_date(d);
-			p.setPost_type(2);
-			postService.save(p);
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			if(fileName!=null && fileName!="") {
-				String url = "resources/contents/images/post/"+fileName;
-				Post_Image pi = new Post_Image();
-				pi.setUrl(url);
-				pi.setPost_id(postService.getLastPostId());
-				postImageService.save(pi);
-				Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
-				try {
-					Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					e.printStackTrace();
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		if( ((content != null && content.replaceAll(" ", "").length() > 0 ) || (fileName!=null && fileName!="")) && price >= 0 ) {
+			try {
+				Post p = new Post();
+				Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+				p.setAccount_id(acc.getAccount_id());
+				p.setPost_content(content);
+				p.setProvince_id(province_id);
+				p.setPrice(price);
+				p.setPost_status(true);
+				Timestamp d = Timestamp.valueOf(LocalDateTime.now());
+				p.setPost_date(d);
+				p.setPost_type(2);
+				postService.save(p);
+				if(fileName!=null && fileName!="") {
+					String url = "resources/contents/images/post/"+fileName;
+					Post_Image pi = new Post_Image();
+					pi.setUrl(url);
+					pi.setPost_id(postService.getLastPostId());
+					postImageService.save(pi);
+					Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
+					try {
+						Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		String referrer = request.getHeader("referer").replace("http://localhost:8080/KLTN", "");
 		return "redirect:" + referrer;
@@ -325,34 +329,36 @@ public class UserController {
 	public String add_shareroom(@RequestParam("file") MultipartFile file, @RequestParam("content") String content, 
 			@RequestParam("province") int province_id, @RequestParam("price") int price,
 			HttpServletRequest request, HttpSession session) {
-		try {
-			Post p = new Post();
-			Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
-			p.setAccount_id(acc.getAccount_id());
-			p.setPost_content(content);
-			p.setProvince_id(province_id);
-			p.setPrice(price);
-			p.setPost_status(true);
-			Timestamp d = Timestamp.valueOf(LocalDateTime.now());
-			p.setPost_date(d);
-			p.setPost_type(3);
-			postService.save(p);
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			if(fileName!=null && fileName!="") {
-				String url = "resources/contents/images/post/"+fileName;
-				Post_Image pi = new Post_Image();
-				pi.setUrl(url);
-				pi.setPost_id(postService.getLastPostId());
-				postImageService.save(pi);
-				Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
-				try {
-					Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					e.printStackTrace();
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		if( ((content != null && content.replaceAll(" ", "").length() > 0 ) || (fileName!=null && fileName!="")) && price >= 0 ) {
+			try {
+				Post p = new Post();
+				Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+				p.setAccount_id(acc.getAccount_id());
+				p.setPost_content(content);
+				p.setProvince_id(province_id);
+				p.setPrice(price);
+				p.setPost_status(true);
+				Timestamp d = Timestamp.valueOf(LocalDateTime.now());
+				p.setPost_date(d);
+				p.setPost_type(3);
+				postService.save(p);
+				if(fileName!=null && fileName!="") {
+					String url = "resources/contents/images/post/"+fileName;
+					Post_Image pi = new Post_Image();
+					pi.setUrl(url);
+					pi.setPost_id(postService.getLastPostId());
+					postImageService.save(pi);
+					Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
+					try {
+						Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		String referrer = request.getHeader("referer").replace("http://localhost:8080/KLTN", "");
 		return "redirect:" + referrer;
@@ -362,35 +368,91 @@ public class UserController {
 	public String add_utensil(@RequestParam("file") MultipartFile file, @RequestParam("content") String content, 
 			@RequestParam("province") int province_id, @RequestParam("price") int price,
 			HttpServletRequest request, HttpSession session) {
-		try {
-			Post p = new Post();
-			Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
-			p.setAccount_id(acc.getAccount_id());
-			p.setPost_content(content);
-			p.setProvince_id(province_id);
-			p.setPrice(price);
-			p.setPost_status(true);
-			Timestamp d = Timestamp.valueOf(LocalDateTime.now());
-			p.setPost_date(d);
-			p.setPost_type(4);
-			postService.save(p);
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			if(fileName!=null && fileName!="") {
-				String url = "resources/contents/images/post/"+fileName;
-				Post_Image pi = new Post_Image();
-				pi.setUrl(url);
-				pi.setPost_id(postService.getLastPostId());
-				postImageService.save(pi);
-				Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
-				try {
-					Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					e.printStackTrace();
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		if( ((content != null && content.replaceAll(" ", "").length() > 0 ) || (fileName!=null && fileName!="")) && price >= 0 ) {
+			try {
+				Post p = new Post();
+				Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+				p.setAccount_id(acc.getAccount_id());
+				p.setPost_content(content);
+				p.setProvince_id(province_id);
+				p.setPrice(price);
+				p.setPost_status(true);
+				Timestamp d = Timestamp.valueOf(LocalDateTime.now());
+				p.setPost_date(d);
+				p.setPost_type(4);
+				postService.save(p);
+				if(fileName!=null && fileName!="") {
+					String url = "resources/contents/images/post/"+fileName;
+					Post_Image pi = new Post_Image();
+					pi.setUrl(url);
+					pi.setPost_id(postService.getLastPostId());
+					postImageService.save(pi);
+					Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
+					try {
+						Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		String referrer = request.getHeader("referer").replace("http://localhost:8080/KLTN", "");
+		return "redirect:" + referrer;
+	}
+	
+	@GetMapping(value = "/edit-post/{postId}")
+	public String edit_post_get(@PathVariable("postId") int postId, Model model, HttpServletRequest request, HttpSession session) {
+		if(!checkAvailable(session)) 
+			return "redirect:/login";
+		Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		if(!postService.checkByAccountId(acc.getAccount_id(), postId)) {
+			return "redirect:/post";
+		}
+		setNavInfo(model, session);
+		model.addAttribute("listProvince", provinceService.findAll());
+		model.addAttribute("post", postService.findOne(postId));
+		return "post-edit";
+	}
+	
+	@PostMapping(value = "/edit-post/{postId}")
+	public String edit_post(@PathVariable("postId") int postId, @RequestParam("file") MultipartFile file, 
+			@RequestParam("content") String content, @RequestParam("province") int province_id, @RequestParam("price") int price, 
+			@RequestParam("status") int status, HttpServletRequest request, HttpSession session) {
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		if( ((content != null && content.replaceAll(" ", "").length() > 0 ) || (fileName!=null && fileName!="")) && price >= 0 ) {
+			try {
+				Post p = postService.findOne(postId);
+				p.setPost_content(content);
+				p.setProvince_id(province_id);
+				p.setPrice(price);
+				if(status == 1) {
+					p.setPost_status(true);
+				}
+				else {
+					p.setPost_status(false);
+				}
+				postService.save(p);
+				if(fileName!=null && fileName!="") {
+					String url = "resources/contents/images/post/"+fileName;
+					Post_Image pi = new Post_Image();
+					pi.setUrl(url);
+					pi.setPost_id(postId);
+					postImageService.save(pi);
+					Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/post/" + fileName);
+					try {
+						Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		String referrer = request.getHeader("referer").replace("http://localhost:8080/KLTN", "");
 		return "redirect:" + referrer;
 	}
@@ -398,6 +460,12 @@ public class UserController {
 	@PostMapping(value = "/delete-post")
 	public ResponseEntity<?> delete_comment(@RequestBody int post_id) {
 		postImageService.deleteByPost(post_id);
+		postLikeService.deleteByPost(post_id);
+		List<Comment> lc = commentService.findAllByPost(post_id);
+		for( Comment c : lc ) {
+			commentImageService.deleteByComment(c.getComment_id());
+			commentService.deleteByPost(post_id);
+		}
 		postService.delete(post_id);
 		return ResponseEntity.ok("OK");
 	}
@@ -529,6 +597,10 @@ public class UserController {
 	public String profile_get(@PathVariable("accId") int accId, Model model, HttpSession session) {
 		if(!checkAvailable(session)) 
 			return "redirect:/login";
+		Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		if(accId == acc.getAccount_id()) {
+			return "redirect:/my-profile";
+		}
 		setNavInfo(model, session);
 		model.addAttribute("viewAccount", accountService.findOne(accId));
 		return "acc-profile";
@@ -538,6 +610,10 @@ public class UserController {
 	public String acc_post_get(@PathVariable("accId") int accId, Model model, HttpSession session) {
 		if(!checkAvailable(session)) 
 			return "redirect:/login";
+		Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		if(accId == acc.getAccount_id()) {
+			return "redirect:/my-post";
+		}
 		setNavInfo(model, session);
 		model.addAttribute("viewAccount", accountService.findOne(accId));
 		model.addAttribute("listPostAcc", postService.findByAccountId(accId));
@@ -548,9 +624,13 @@ public class UserController {
 	public String acc_friend_get(@PathVariable("accId") int accId, Model model, HttpSession session) {
 		if(!checkAvailable(session)) 
 			return "redirect:/login";
+		Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		if(accId == acc.getAccount_id()) {
+			return "redirect:/friend";
+		}
 		setNavInfo(model, session);
 		model.addAttribute("viewAccount", accountService.findOne(accId));
-		model.addAttribute("listFriend", friendService.findAllFriend(accId));
+		model.addAttribute("listAccFriend", friendService.findAllFriend(accId));
 		return "acc-friend";
 	}
 	
@@ -624,7 +704,7 @@ public class UserController {
 		if(!checkAvailable(session)) 
 			return "redirect:/login";
 		Account account = (Account)session.getAttribute(CURRENT_ACCOUNT);
-		model.addAttribute("listFriend", friendService.findAllFriend(account.getAccount_id()));
+		model.addAttribute("listMyFriend", friendService.findAllFriend(account.getAccount_id()));
 		setNavInfo(model, session);
 		setListPostData(model, session);
 		return "friend";
@@ -649,9 +729,26 @@ public class UserController {
 		return ResponseEntity.ok("OK");
 	}
 	
+	@PostMapping(value = "/accept-requestAccId")
+	public ResponseEntity<?> accept_request_byAccId(@RequestBody int accId, HttpSession session) {	
+		Account account = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		Friend fr = friendService.findOneRequest(accId, account.getAccount_id());
+		fr.setFriend_status(true);
+		friendService.save(fr);
+		return ResponseEntity.ok("OK");
+	}
+	
 	@PostMapping(value = "/deny-request")
 	public ResponseEntity<?> deny_request(@RequestBody int friendId) {
 		friendService.delete(friendId);
+		return ResponseEntity.ok("OK");
+	}
+	
+	@PostMapping(value = "/deny-requestAccId")
+	public ResponseEntity<?> deny_request_byAccId(@RequestBody int accId, HttpSession session) {	
+		Account account = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		Friend fr = friendService.findOneRequest(accId, account.getAccount_id());
+		friendService.delete(fr.getFriend_id());
 		return ResponseEntity.ok("OK");
 	}
 	
@@ -691,19 +788,17 @@ public class UserController {
 	public String message_get(Model model, HttpSession session) {
 		if(!checkAvailable(session)) 
 			return "redirect:/login";
+		setNavInfo(model, session);
 		Account account = (Account)session.getAttribute(CURRENT_ACCOUNT);
-		List<Message> listChat = messageService.getListChat(account.getAccount_id());
-		if(listChat.size() > 0) {
+		List<Message> lc = messageService.getListChat(account.getAccount_id());
+		if(lc.size() > 0) {
 			if(messageService.getListChat(account.getAccount_id()).get(0).getFrom_account_id() == account.getAccount_id()) {
-				model.addAttribute("listMessage", 
-					messageService.findAllMessageByAccount(account.getAccount_id(), listChat.get(0).getFrom_account_id()));
+				model.addAttribute("listMessageView", messageService.findAllMessageByAccount(account.getAccount_id(), lc.get(0).getFrom_account_id()));
 			}
 			else {
-				model.addAttribute("listMessage", 
-						messageService.findAllMessageByAccount(account.getAccount_id(), listChat.get(0).getTo_account_id()));
+				model.addAttribute("listMessageView", messageService.findAllMessageByAccount(account.getAccount_id(), lc.get(0).getTo_account_id()));
 			}
 		}
-		setNavInfo(model, session);
 		return "message";
 	}
 	

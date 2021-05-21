@@ -130,7 +130,11 @@
 	                                        <ul>
 	                                        	<c:choose>
 		                                        	<c:when test="${ post.getAccount().getAccount_id() == current_account.account_id }">
-		                                        		<li><button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button></li>
+		                                        		<li>
+		                                        			<a href="${contextPath}/edit-post/${post.post_id }">
+		                                        				<button class="edit-mypost" data-id="${post.post_id }">Sửa bài viết</button>
+		                                        			</a>
+		                                        		</li>
 	                                            		<li><button class="remove-mypost" data-id="${post.post_id }" data-cont="${fn:substring(post.post_content, 0, 100) }">
 	                                            			Xóa bài viết</button></li>
 		                                        	</c:when>
@@ -187,8 +191,8 @@
 				                                        	<c:when test="${ check == 'yes' }">
 				                                        		<li class="request1"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2 display-0"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3 display-0"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4 display-0"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3 display-0"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4 display-0"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5 display-0"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 			                                            		<li class="request6 display-0"><button class="add-follow" data-id="${post.getAccount().getAccount_id() }">Theo dõi</button></li>
 			                                            		<li class="request7 display-0"><button class="remove-follow" data-id="${post.getAccount().getAccount_id() }">Bỏ theo dõi</button></li>
@@ -196,22 +200,22 @@
 				                                        	<c:when test="${ check == 'send' }">
 				                                        		<li class="request1 display-0"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2 display-0"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3 display-0"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4 display-0"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3 display-0"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4 display-0"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 				                                        	</c:when>
 				                                        	<c:when test="${ check == 'receive' }">
 				                                        		<li class="request1 display-0"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2 display-0"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5 display-0"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 				                                        	</c:when>
 				                                        	<c:otherwise>
 				                                        		<li class="request1 display-0"><button class="remove-friend" data-id="${post.getAccount().getAccount_id() }">Hủy kết bạn</button></li>
 			                                            		<li class="request2"><button class="add-friend" data-id="${post.getAccount().getAccount_id() }">Kết bạn</button></li>
-			                                            		<li class="request3 display-0"><button class="accept-request" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
-			                                            		<li class="request4 display-0"><button class="deny-request" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
+			                                            		<li class="request3 display-0"><button class="accept-request-op" data-id="${post.getAccount().getAccount_id() }">Chấp nhận y/c kết bạn</button></li>
+			                                            		<li class="request4 display-0"><button class="deny-request-op" data-id="${post.getAccount().getAccount_id() }">Từ chối y/c kết bạn</button></li>
 			                                            		<li class="request5 display-0"><button class="remove-request" data-id="${post.getAccount().getAccount_id() }">Hủy y/c kết bạn</button></li>
 				                                        	</c:otherwise>
 				                                        </c:choose>

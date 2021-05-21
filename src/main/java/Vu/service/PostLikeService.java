@@ -41,6 +41,12 @@ public class PostLikeService {
 		return list;
 	}
 	
+	public void deleteByPost(int postId) {
+		for(Post_Like pl : postLikeRepository.findAllByPost(postId) ) {
+			postLikeRepository.delete(pl.getLike_id());
+		}
+	}
+	
 	public void save(Post_Like pl) {
 		postLikeRepository.save(pl);
 	}

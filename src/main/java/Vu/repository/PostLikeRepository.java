@@ -18,4 +18,7 @@ public interface PostLikeRepository extends JpaRepository<Post_Like, Integer> {
 	@Query(value="select * from Post_Like where account_id = :accountId", nativeQuery = true)
 	List<Post_Like> findListLiked( @Param("accountId") int accountId );
 	
+	@Query(value="select * from Post_Like where post_id like :postId", nativeQuery = true)
+	List<Post_Like> findAllByPost( @Param("postId") int postId );
+	
 }

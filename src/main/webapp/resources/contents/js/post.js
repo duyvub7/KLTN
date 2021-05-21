@@ -100,6 +100,58 @@ $(document).ready(function () {
 		});
 	});
 	
+	$('.accept-request-op').click(function () {
+		$(this).parent('li').parent('ul').children('.request1').show()
+		$(this).parent('li').parent('ul').children('.request3').hide()
+		$(this).parent('li').parent('ul').children('.request4').hide()
+		let accId = $(this).attr('data-id')
+		let reNum = '.request-num-' + accId;
+		$(reNum).hide()
+		$.ajax({
+			async: true,
+			headers: {
+				"content-type": "application/json;charset=utf-8"	
+			},
+			type: "POST",
+			url: "/KLTN/accept-requestAccId",
+			data: accId,
+			success: function (response) {
+				if (response === 'OK') {
+					console.log('da chap nhan')
+				}
+			},
+			error: function (err) {
+				console.log(err)
+			}
+		});
+	});
+	
+	$('.deny-request-op').click(function () {
+		$(this).parent('li').parent('ul').children('.request2').show()
+		$(this).parent('li').parent('ul').children('.request3').hide()
+		$(this).parent('li').parent('ul').children('.request4').hide()
+		let accId = $(this).attr('data-id')
+		let reNum = '.request-num-' + accId;
+		$(reNum).hide()
+		$.ajax({
+			async: true,
+			headers: {
+				"content-type": "application/json;charset=utf-8"	
+			},
+			type: "POST",
+			url: "/KLTN/deny-requestAccId",
+			data: accId,
+			success: function (response) {
+				if (response === 'OK') {
+					console.log('da xoa')
+				}
+			},
+			error: function (err) {
+				console.log(err)
+			}
+		});
+	});
+	
 	$('.save-post').click(function () {
 		$(this).parent('li').parent('ul').children('.save2').show()
 		$(this).parent('li').hide()
