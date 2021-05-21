@@ -307,6 +307,7 @@
                                    <div class="profile-body">
                                        <ul>
                                            <li><a href="${contextPath}/my-profile"><i class="flaticon-user"></i>Hồ sơ cá nhân</a></li>
+                                           <li><a href="${contextPath}/change-pass"><i class="fa fa-lock text-muted"></i>Đổi mật khẩu</a></li>
                                            <li><a href="${contextPath}/logout"><i class="feather icon-log-out"></i>Đăng xuất</a></li>
                                        </ul>
                                    </div>

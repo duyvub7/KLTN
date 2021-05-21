@@ -621,6 +621,42 @@ public class UserController {
 		return "redirect:/my-profile";
 	}
 	
+	@GetMapping(value = "/change-pass")
+	public String change_pass_get(Model model, HttpSession session) {
+		if(!checkAvailable(session)) 
+			return "redirect:/login";
+		model.addAttribute("listPost", postService.findAllDescPrice(EMPTY_ROOM));
+		model.addAttribute("topPost", postService.findTopPost(EMPTY_ROOM));
+		setNavInfo(model, session);
+		return "change-pass";
+	}
+	
+	@PostMapping("/check-changepass/{pass}/{newPass}/{comfirmPass}")
+	public ResponseEntity<?> checkLogin(HttpSession session, @PathVariable("pass") String pass,
+			@PathVariable("newPass") String newPass, @PathVariable("comfirmPass") String comfirmPass) {
+		Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		if (!accountService.checkPassById(acc.getAccount_id(), pass)) {
+			return new ResponseEntity<String>("Mat khau cu khong dung", HttpStatus.OK);
+		}else if (newPass.length() < 8 || newPass.length() > 20) {
+			return new ResponseEntity<String>("Mat khau phai tu 8 den 20 ky tu", HttpStatus.OK);
+		} else if (pass.equals(newPass)) {
+			return new ResponseEntity<String>("Mat khau moi trung lap voi mat khau cu", HttpStatus.OK);
+		} else if (!comfirmPass.equals(newPass)) {
+			return new ResponseEntity<String>("Xac nhan mat khau khong trung khop", HttpStatus.OK);
+		} else {
+			return ResponseEntity.ok("OK");
+		}
+	}
+	
+	@PostMapping(value = "/change-pass")
+	public String change_pass_post(@RequestParam("pass") String pass, @RequestParam("newPass") String newPass,
+			@RequestParam("confirmPass") String confirmPass, HttpSession session) {
+		Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		acc.setPassword(newPass);
+		accountService.save(acc);
+		return "change-pass";
+	}
+	
 	@GetMapping(value = "/profile/{accId}")
 	public String profile_get(@PathVariable("accId") int accId, Model model, HttpSession session) {
 		if(!checkAvailable(session)) 
