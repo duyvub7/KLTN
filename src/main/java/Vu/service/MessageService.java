@@ -24,7 +24,22 @@ public class MessageService {
 	}
 	
 	public List<Message> findAllMessageByAccount(int id, int friendId) {
-		return messageRepository.findAllMessageByAccount(id, friendId);
+		if(messageRepository.findAllMessageByAccount(id, friendId).size() >0 ) {
+			return messageRepository.findAllMessageByAccount(id, friendId);
+		}
+		return null;
+	}
+	
+	public int getLastCommentId() {
+		return messageRepository.findAll().get(messageRepository.findAll().size()-1).getMessage_id();
+	}
+	
+	public void save ( Message mess ) {
+		messageRepository.save(mess);
+	}
+	
+	public void delete ( int id ) {
+		messageRepository.delete(id);
 	}
 	
 }

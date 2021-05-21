@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import Vu.model.Comment_Image;
 import Vu.model.Follow;
 import Vu.model.Friend;
 import Vu.model.Message;
+import Vu.model.Message_Image;
 import Vu.model.Post;
 import Vu.model.Post_Image;
 import Vu.model.Post_Like;
@@ -43,6 +45,7 @@ import Vu.service.CommentImageService;
 import Vu.service.CommentService;
 import Vu.service.FollowService;
 import Vu.service.FriendService;
+import Vu.service.MessageImageService;
 import Vu.service.MessageService;
 import Vu.service.NotificationService;
 import Vu.service.PostImageService;
@@ -80,6 +83,9 @@ public class UserController {
 	
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private MessageImageService messageImageService;
 	
 	@Autowired
 	private NotificationService notificationService;
@@ -791,15 +797,40 @@ public class UserController {
 		setNavInfo(model, session);
 		Account account = (Account)session.getAttribute(CURRENT_ACCOUNT);
 		List<Message> lc = messageService.getListChat(account.getAccount_id());
-		if(lc.size() > 0) {
-			if(messageService.getListChat(account.getAccount_id()).get(0).getFrom_account_id() == account.getAccount_id()) {
-				model.addAttribute("listMessageView", messageService.findAllMessageByAccount(account.getAccount_id(), lc.get(0).getFrom_account_id()));
-			}
-			else {
-				model.addAttribute("listMessageView", messageService.findAllMessageByAccount(account.getAccount_id(), lc.get(0).getTo_account_id()));
-			}
+		if( lc != null ) {
+			List<Message> listMess = new ArrayList<Message>();
+			listMess = messageService.findAllMessageByAccount(lc.get(0).getTo_account_id(), lc.get(0).getFrom_account_id());
+			model.addAttribute("listMessageView", listMess);
 		}
 		return "message";
+	}
+	
+	@PostMapping(value = "/add-message/{accId}")
+	public String add_mess_post(@PathVariable("accId") int accId, @RequestParam("file") MultipartFile file, 
+			@RequestParam("content") String content, HttpSession session) {
+		Account acc = (Account)session.getAttribute(CURRENT_ACCOUNT);
+		Message mess = new Message();
+		mess.setFrom_account_id(acc.getAccount_id());
+		mess.setTo_account_id(accId);
+		mess.setMessage_content(content);
+		Timestamp d = Timestamp.valueOf(LocalDateTime.now());
+		mess.setTime(d);
+		messageService.save(mess);
+		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		if(fileName!=null && fileName!="") {
+			String url = "resources/contents/images/message/"+fileName;
+			Message_Image mi = new Message_Image();
+			mi.setUrl(url);
+			mi.setMessage_id(messageService.getLastCommentId());
+			messageImageService.save(mi);
+			Path path = Paths.get("D:/Program Documents/KLTN - Spring/KLTN/src/main/webapp/resources/contents/images/message/" + fileName);
+			try {
+				Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return "redirect:/message";
 	}
 	
 	@PostMapping(value = "/like-post")

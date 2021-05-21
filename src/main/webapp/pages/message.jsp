@@ -122,80 +122,38 @@
 											</c:otherwise>
 									</c:choose>		
                             	</c:forEach>
-                            	<h5>${listMessageView.size() }</h5>
-                            	<div class="incoming_msg">
-                                    <div class="incoming_msg_img"> <img
-                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
-                                    <div class="received_msg">
-                                        <div class="received_withd_msg">
-                                            <p>Xin chào</p>
-                                            <span class="time_date">13-07-2021 09:11</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="incoming_msg">
-                                    <div class="incoming_msg_img"> <img
-                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
-                                    <div class="received_msg">
-                                        <div class="received_withd_msg">
-                                            <p>Trọ ở 13 Nguyễn Huệ còn không bạn</p>
-                                            <span class="time_date">13-07-2021 09:11</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="outgoing_msg">
-                                    <div class="sent_msg">
-                                        <p>Còn nhé bạn</p>
-                                        <span class="time_date">13-07-2021 09:15</span>
-                                    </div>
-                                </div>
-                                <div class="incoming_msg">
-                                    <div class="incoming_msg_img"> <img
-                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
-                                    <div class="received_msg">
-                                        <div class="received_withd_msg">
-                                            <p>OK</p>
-                                            <span class="time_date">13-07-2021 09:17</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="incoming_msg">
-                                    <div class="incoming_msg_img"> <img
-                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
-                                    <div class="received_msg">
-                                        <div class="received_withd_msg">
-                                            <p>Cảm ơn về thông tin</p>
-                                            <span class="time_date">13-07-2021 09:18</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="outgoing_msg">
-                                    <div class="sent_msg">
-                                        <p>Nếu muốn xem phòng thì liên hệ mình nhé</p>
-                                        <span class="time_date">13-07-2021 09:28</span>
-                                    </div>
-                                </div>
-                                <div class="incoming_msg">
-                                    <div class="incoming_msg_img"> <img
-                                            src="${listChat.get(0).getFrom_account().getAvatar() }"> </div>
-                                    <div class="received_msg">
-                                        <div class="received_withd_msg">
-                                            <p>OK</p>
-                                            <span class="time_date">13-07-2021 09:40</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="type_msg">
-                                <div class="input_msg_write">
-                                    <input type="text" class="write_msg col-10" placeholder="Nhập tin nhắn" />
-                                    <i class="fa fa-file-image-o float-right;" style="font-size: 20px; padding-top: 20px;" aria-hidden="true" ></i>
-                                    <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+	                            <div class="type_msg">
+	                            	<c:choose>  
+									    <c:when test="${listChat.get(0).getTo_account().getAccount_id() == current_account.account_id}">  
+									       <form action="add-message/${listChat.get(0).getFrom_account().getAccount_id()}" method="post" enctype="multipart/form-data" id="send-form">
+				                                <div class="input_msg_write">
+				                                    <input type="text" class="write_msg col-10" placeholder="Nhập tin nhắn" name="content"/>
+				                                    <i class="fa fa-file-image-o float-right;" style="font-size: 20px; padding-top: 20px;" aria-hidden="true" 
+				                                    	onclick="document.getElementById('img-btn').click()"></i>
+				                                    <button class="msg_send_btn" type="button" onclick="document.getElementById('send-form').submit()">
+				                                    	<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+				                                    </button>
+				                                </div>
+				                                <input id="img-btn" name="file" style="visibility:hidden;" type="file">
+				                            </form>
+									    </c:when>
+									    <c:otherwise>  
+									       <form action="add-message/${listChat.get(0).getTo_account().getAccount_id()}" method="post" enctype="multipart/form-data" id="send-form">
+				                                <div class="input_msg_write">
+				                                    <input type="text" class="write_msg col-10" placeholder="Nhập tin nhắn" name="content"/>
+				                                    <i class="fa fa-file-image-o float-right;" style="font-size: 20px; padding-top: 20px;" aria-hidden="true" 
+				                                   	 	onclick="document.getElementById('img-btn').click()"></i>
+				                                    <button class="msg_send_btn" type="button" onclick="document.getElementById('send-form').submit()">
+				                                    	<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+				                                    </button>
+				                                </div>
+				                                <input id="img-btn" name="file" style="visibility:hidden;" type="file">
+				                            </form>
+									    </c:otherwise>  
+									</c:choose>
+	                            </div>
+                           </div>
+                     </div>
                 </div>
             </div>
         </div>
